@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 
 type Props = { params: Promise<{ slug: string }> }
 
+// tells Next.js which slugs exist, so it can pre-build all post pages at build time
 export async function generateStaticParams() {
   const posts = await getAllPosts()
   return posts.map(p => ({ slug: p.slug }))
