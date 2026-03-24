@@ -1,18 +1,25 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 type Props = {
-  title: string
-  description: string
-  href: string
-  emoji: string
-}
+  title: string;
+  description: string;
+  href: string;
+};
 
-export default function TopicCard({ title, description, href, emoji }: Props) {
+export default function TopicCard({ title, description, href }: Props) {
   return (
-    <Link href={href} className="block rounded-xl border-2 border-slate-200 bg-white p-6 hover:border-blue-300 transition-colors">
-      <div className="text-3xl mb-3">{emoji}</div>
-      <h2 className="text-lg font-bold text-slate-800 mb-1">{title}</h2>
-      <p className="text-sm text-slate-500">{description}</p>
+    <Link
+      href={href}
+      className="flex flex-col items-center p-4 w-32 flex-shrink-0"
+    >
+      <img
+        src={`/icons/${title.toLowerCase()}.svg`}
+        alt={title}
+        className="w-12 h-12 mb-2"
+      />
+      <span className="text-sm font-medium text-slate-700 hover:underline hover:decoration-1 hover:underline-offset-2 transition-all">
+        {title}
+      </span>
     </Link>
-  )
+  );
 }

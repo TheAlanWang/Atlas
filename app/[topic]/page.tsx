@@ -3,11 +3,14 @@ import RoadmapSidebar from '@/components/RoadmapSidebar'
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 import { notFound } from 'next/navigation'
 
+// params.topic comes from the [topic] folder name — e.g. visiting /python → topic = "python"
+// searchParams.slug comes from the URL query string — e.g. /python?slug=python-functions
 type Props = {
   params: Promise<{ topic: string }>
   searchParams: Promise<{ slug?: string }>
 }
 
+// build time: scans all MD files, collects unique topic values, pre-builds one page per topic
 export async function generateStaticParams() {
   const topics = await getAllTopics()
   return topics.map(topic => ({ topic }))
