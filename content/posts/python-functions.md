@@ -7,6 +7,16 @@ duration: 30
 date: 2026-03-21
 ---
 
+## What You'll Learn
+
+- How to define functions with parameters, defaults, and return values
+- How `*args` and `**kwargs` work for flexible function signatures
+- What lambda functions are and when to use them
+- How Python's scope rules work (local vs global)
+- Why functions are first-class objects in Python
+
+---
+
 ## Defining Functions
 
 Use the `def` keyword to define a function:
@@ -131,30 +141,30 @@ In practice, `global` is a code smell — prefer returning values instead of mut
 
 ## Interview Questions
 
-> **Q: What is the difference between `*args` and `**kwargs`?**
+> _Q: What is the difference between `*args` and `**kwargs`?_
 
 `*args` captures any number of positional arguments as a tuple. `**kwargs` captures any number of keyword arguments as a dictionary. They let you write functions that accept a variable number of inputs. You can use both together: `def f(*args, **kwargs)`.
 
-> **Q: What does it mean that Python functions are first-class objects?**
+> _Q: What does it mean that Python functions are first-class objects?_
 
 Functions can be assigned to variables, passed as arguments, and returned from other functions — just like any other value. This is what makes patterns like callbacks, decorators, and higher-order functions (like `map`, `filter`, `sorted`) possible.
 
-> **Q: What is the difference between a parameter and an argument?**
+> _Q: What is the difference between a parameter and an argument?_
 
 A parameter is the variable name in the function definition (`def greet(name)`). An argument is the actual value passed when calling the function (`greet("Alan")`). Parameters define what a function expects; arguments are what you give it.
 
-> **Q: What is a common pitfall with mutable default parameters?**
+> _Q: What is a common pitfall with mutable default parameters?_
 
 Default parameter values are evaluated once when the function is defined, not each time it is called. If you use a mutable object (like a list) as a default, all calls share the same object, which can lead to unexpected behavior. The fix is to use `None` as the default and create the mutable object inside the function body.
 
-> **Q: What does a function return if there is no `return` statement?**
+> _Q: What does a function return if there is no `return` statement?_
 
 It returns `None`. The same is true if you write `return` with no value. This is Python's implicit return, and it means you should always check whether you actually need a return value when calling a function.
 
-> **Q: What is the difference between a lambda and a `def` function?**
+> _Q: What is the difference between a lambda and a `def` function?_
 
 A lambda is a single-expression anonymous function written in one line — useful for short, throwaway logic like sort keys. A `def` function can have a name, multiple statements, docstrings, and full logic. If a lambda is getting complex or you need it in more than one place, use `def` instead.
 
-> **Q: What is the difference between local and global scope?**
+> _Q: What is the difference between local and global scope?_
 
 Variables defined inside a function are local — they only exist for the duration of that call and are invisible outside. Variables defined at module level are global and accessible anywhere. To reassign a global variable from inside a function, you must declare it with `global`. In practice, mutating globals is considered a code smell; prefer returning values.

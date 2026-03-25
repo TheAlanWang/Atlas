@@ -117,26 +117,26 @@ return (
 
 ## Interview Questions
 
-> **Q: What is the difference between JSX and HTML?**
+> _Q: What is the difference between JSX and HTML?_
 
 JSX is a JavaScript syntax extension that compiles to `React.createElement()` calls. HTML is a markup language parsed directly by the browser. In JSX, you use `className` instead of `class`, event handlers are camelCased (`onClick`), and you can embed JavaScript expressions using `{}`.
 
-> **Q: Why must component names start with a capital letter?**
+> _Q: Why must component names start with a capital letter?_
 
 React uses the case of the first letter to distinguish between HTML tags and custom components. A lowercase tag like `<div>` is treated as a native HTML element. An uppercase tag like `<MyComponent>` is treated as a custom component and React looks for it in scope.
 
-> **Q: What is a Fragment and when would you use it?**
+> _Q: What is a Fragment and when would you use it?_
 
 A Fragment (`<>...</>` or `<React.Fragment>`) lets you group multiple elements without adding an extra node to the DOM. Use it when you need to return multiple siblings from a component but don't want a wrapper `<div>` affecting your layout or styling.
 
-> **Q: Why does React require a `key` prop when rendering lists?**
+> _Q: Why does React require a `key` prop when rendering lists?_
 
 React uses `key` to identify which items in a list have changed, been added, or been removed. Without a stable key, React falls back to index-based comparison, which can cause incorrect re-renders or lost component state when items are reordered. Keys should be unique among siblings and stable — typically a database ID, not the array index.
 
-> **Q: What is the difference between `&&` and a ternary for conditional rendering?**
+> _Q: What is the difference between `&&` and a ternary for conditional rendering?_
 
 `&&` renders the right side only when the condition is truthy, and renders nothing when it's falsy — useful when you only need a "show or hide" without an else case. A ternary (`condition ? A : B`) always renders one of two branches, making it better when you need to switch between two different elements. One pitfall with `&&`: if the condition is `0`, React will render the number `0` instead of nothing.
 
-> **Q: What does a component render if it returns `null` or nothing?**
+> _Q: What does a component render if it returns `null` or nothing?_
 
 Returning `null` from a component renders nothing to the DOM — the component is effectively invisible but still exists in the React tree and can still hold state. Returning `undefined` (e.g., from a missing return statement) will throw an error, so always return `null` explicitly when you want a component to render nothing.

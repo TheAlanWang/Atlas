@@ -1,7 +1,8 @@
 import RoadmapSidebar from "@/components/RoadmapSidebar";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
+import TableOfContents from "@/components/TableOfContents";
 import { notFound } from "next/navigation";
-import { formatDate } from "@/lib/utils";
+import { formatDate, extractHeadings } from "@/lib/utils";
 import {
   getRoadmapSections,
   getPost,
@@ -37,9 +38,10 @@ export default async function TopicPage({ params, searchParams }: Props) {
   const activePost = activeSlug ? await getPost(activeSlug) : null;
   const cnPost =
     activePost && hasCnVersion(activeSlug) ? await getPostCn(activeSlug) : null;
+  const headings = activePost ? extractHeadings(activePost.content) : [];
 
   return (
-    <div className="flex gap-8">
+    <div className="flex gap-6 -mx-6 px-2">
       {/* RoadmapSidebar used here for the first time — defined back in Task 6 */}
       <RoadmapSidebar
         sections={sections}
@@ -47,8 +49,8 @@ export default async function TopicPage({ params, searchParams }: Props) {
         basePath={`/${topic}`}
       />
 
-      <div className="flex-1 min-w-0">
-        <div className="max-w-3xl mx-auto">
+      <div className="flex-1 min-w-0 flex gap-8">
+        <div className="flex-1 min-w-0">
           {activePost ? (
             <article>
               <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
@@ -79,6 +81,7 @@ export default async function TopicPage({ params, searchParams }: Props) {
             <p className="text-slate-400">Select a topic from the roadmap.</p>
           )}
         </div>
+      <TableOfContents headings={headings} />
       </div>
     </div>
   );

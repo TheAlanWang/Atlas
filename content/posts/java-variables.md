@@ -103,30 +103,30 @@ MAX_SCORE = 99;  // compile error
 
 ## Interview Questions
 
-> **Q: What is the difference between primitive types and reference types in Java?**
+> _Q: What is the difference between primitive types and reference types in Java?_
 
 Primitives (`int`, `double`, `boolean`, etc.) hold their value directly in memory and are stored on the stack. Reference types hold a memory address pointing to an object on the heap. Primitives cannot be `null`; reference types can. Primitives are compared with `==`; reference types should be compared with `.equals()`.
 
-> **Q: Why should you use `.equals()` instead of `==` for String comparison?**
+> _Q: Why should you use `.equals()` instead of `==` for String comparison?_
 
 `==` compares references — whether two variables point to the same object in memory. Two `String` variables with the same content may be different objects, so `==` can return `false` even when the values are identical. `.equals()` compares the actual character content, which is almost always what you want.
 
-> **Q: What is the difference between `int` and `Integer` in Java?**
+> _Q: What is the difference between `int` and `Integer` in Java?_
 
 `int` is a primitive type — it holds the value directly and cannot be `null`. `Integer` is a wrapper class — it wraps an `int` in an object, can be `null`, and provides utility methods like `Integer.parseInt()`. Java automatically converts between the two (autoboxing/unboxing), but `Integer` has more overhead since it's a heap object.
 
-> **Q: What is the difference between widening and narrowing type conversion?**
+> _Q: What is the difference between widening and narrowing type conversion?_
 
 Widening goes from a smaller type to a larger one (e.g., `int` to `double`) and happens automatically because there is no risk of data loss. Narrowing goes from a larger type to a smaller one (e.g., `double` to `int`) and requires an explicit cast — the decimal part is truncated, not rounded, so data can be lost.
 
-> **Q: What is `var` in Java and when can you use it?**
+> _Q: What is `var` in Java and when can you use it?_
 
 `var` (introduced in Java 10) lets the compiler infer the type of a local variable from the assigned value. It can only be used for local variables inside methods — not for fields, method parameters, or return types. The type is still static and determined at compile time; `var` just saves you from writing it out.
 
-> **Q: What does `final` mean when applied to a variable?**
+> _Q: What does `final` mean when applied to a variable?_
 
 `final` means the variable can only be assigned once — after that, any attempt to reassign it is a compile-time error. For primitives, this makes the value constant. For reference types, it means the reference cannot point to a different object, but the object's contents can still be mutated. By convention, `final` constants are named in `ALL_CAPS`.
 
-> **Q: What are the 8 primitive types in Java?**
+> _Q: What are the 8 primitive types in Java?_
 
 `byte`, `short`, `int`, `long` (integers of increasing size), `float`, `double` (decimals), `char` (single character), and `boolean`. The most commonly used are `int`, `double`, `boolean`, and `char`. `long` literals need an `L` suffix and `float` literals need an `f` suffix to distinguish them from `int` and `double`.

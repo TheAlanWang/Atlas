@@ -245,30 +245,30 @@ tests/test_math.py:12: AssertionError
 
 ## 面试常问
 
-> **Q：pytest 和 unittest 有什么区别？**
+> _Q：pytest 和 unittest 有什么区别？_
 
 `unittest` 是 Python 内置的测试框架，风格参考 Java 的 JUnit，测试写在继承 `unittest.TestCase` 的类里。`pytest` 是第三方库，语法更简洁，测试就是普通函数加 `assert`。pytest 也能运行 `unittest` 风格的测试，两者兼容。
 
-> **Q：pytest 里的 fixture 是什么？**
+> _Q：pytest 里的 fixture 是什么？_
 
 Fixture 是用 `@pytest.fixture` 装饰的函数，提供可复用的测试准备工作。不需要在每个测试里重复写 setup 代码，定义一次，按名字注入即可。Fixture 也可以用 `yield` 处理清理逻辑（teardown）。
 
-> **Q：pytest 测试里的 `assert` 是什么？**
+> _Q：pytest 测试里的 `assert` 是什么？_
 
 `assert` 检查一个表达式是否为 `True`。如果为 `False`，pytest 捕获 `AssertionError`，标记测试失败，并显示实际值和期望值的对比。pytest 会对 `assert` 做特殊处理，让失败信息比原生 Python 更易读。
 
-> **Q：`@pytest.mark.parametrize` 有什么用？**
+> _Q：`@pytest.mark.parametrize` 有什么用？_
 
 它让你用多组输入和期望输出跑同一个测试函数，不需要重复写代码。你声明参数名和一个值元组的列表，pytest 会为每行生成一个独立的测试用例。这让测试保持简洁，也方便添加边界情况。
 
-> **Q：pytest 里怎么测试函数是否抛出了异常？**
+> _Q：pytest 里怎么测试函数是否抛出了异常？_
 
 用 `pytest.raises` 作为上下文管理器：`with pytest.raises(SomeException): call_that_raises()`。如果代码块没有抛出预期的异常，测试就失败。也可以用 `as exc_info` 捕获异常信息，对错误消息内容做断言。
 
-> **Q：pytest 对测试文件和测试函数的命名有什么规范？**
+> _Q：pytest 对测试文件和测试函数的命名有什么规范？_
 
 测试文件必须以 `test_` 开头（如 `test_calculator.py`）。测试函数和方法也必须以 `test_` 开头（如 `def test_add()`）。pytest 会自动按这套命名规范发现测试，不需要额外配置。
 
-> **Q：pytest fixture 里怎么做清理（teardown）？**
+> _Q：pytest fixture 里怎么做清理（teardown）？_
 
 在 fixture 里用 `yield` 替代 `return`。`yield` 之前的代码是 setup，之后的代码是 teardown，在测试完成后执行——即使测试失败也会执行。比如可以在 `yield` 前打开数据库连接，在 `yield` 后关闭。

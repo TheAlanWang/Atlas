@@ -78,11 +78,25 @@ export async function getPostsByTopic(topic: string): Promise<Post[]> {
   return all.filter((p) => p.topic === topic);
 }
 
+// load section order from content/topics/<topic>.json
+// falls back to alphabetical if no config exists
+function getSectionRank(topic: string): Map<string, number> {
+  const configPath = path.join(process.cwd(), "content/topics", `${topic}.json`);
+  if (!fs.existsSync(configPath)) return new Map();
+  const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  const rank = new Map<string, number>();
+  for (const section of config.sections) {
+    rank.set(section.title, section.order);
+  }
+  return rank;
+}
+
 // build sidebar structure: group posts by section, sort by order
 export async function getRoadmapSections(
   topic: string,
 ): Promise<RoadmapSection[]> {
   const posts = await getPostsByTopic(topic);
+  const sectionRank = getSectionRank(topic);
   const sectionsMap = new Map<string, RoadmapItem[]>();
 
   for (const post of posts) {
@@ -94,10 +108,16 @@ export async function getRoadmapSections(
     });
   }
 
-  return Array.from(sectionsMap.entries()).map(([title, items]) => ({
-    title,
-    items: items.sort((a, b) => a.order - b.order),
-  }));
+  return Array.from(sectionsMap.entries())
+    .map(([title, items]) => ({
+      title,
+      items: items.sort((a, b) => a.order - b.order),
+    }))
+    .sort((a, b) => {
+      const ra = sectionRank.get(a.title) ?? 999;
+      const rb = sectionRank.get(b.title) ?? 999;
+      return ra - rb;
+    });
 }
 
 // get all unique topics — used by generateStaticParams to pre-build pages

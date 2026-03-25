@@ -18,7 +18,12 @@ export default function RoadmapSidebar({
   // useState returns two things: current value + function to update it
   // openSections: a Set storing which section titles are currently open
   // setOpenSections: the function to update openSections (must use this, not direct assignment)
-  const [openSections, setOpenSections] = useState<Set<string>>(new Set());
+  const initialOpen = new Set(
+    sections
+      .filter((s) => s.items.some((item) => item.slug === activeSlug))
+      .map((s) => s.title)
+  );
+  const [openSections, setOpenSections] = useState<Set<string>>(initialOpen);
 
   // called when user clicks a section title
   function toggleSection(title: string) {
@@ -33,7 +38,7 @@ export default function RoadmapSidebar({
   }
 
   return (
-    <nav className="w-52 shrink-0">
+    <nav className="w-44 shrink-0">
       <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3">
         Roadmap
       </p>

@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Footer from "@/components/Footer";
+import { getAllTopics } from "@/lib/posts";
 
 const inter = Inter({ subsets: ["latin"] }); // google fonts
 
@@ -12,17 +13,18 @@ export const metadata: Metadata = {
   description: "Learning Site",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const topics = await getAllTopics();
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen`}>
         <ThemeProvider>
-          <Header />
-          <main className="max-w-6xl mx-auto px-6 pt-20 pb-8">{children}</main>
+          <Header topics={topics} />
+          <main className="max-w-6xl mx-auto px-6 pt-20 pb-16">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

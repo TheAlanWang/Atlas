@@ -6,7 +6,7 @@ export default function PostCard({ post }: { post: Post }) {
   return (
     <Link
       href={`/${post.topic}?slug=${post.slug}`}
-      className="flex items-center justify-between py-3 px-2 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 rounded"
+      className="flex items-center justify-between py-3 px-4 rounded-xl mb-2 transition-all duration-200 hover:scale-[1.02] hover:bg-slate-200 dark:hover:bg-slate-700"
     >
       <div>
         <span className="text-sm font-medium text-slate-800 dark:text-slate-100">

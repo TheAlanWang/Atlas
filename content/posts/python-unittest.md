@@ -1,10 +1,20 @@
 ---
-title: "unittest"
+title: "Testing with unittest"
 topic: python
 section: Testing
 order: 2
 duration: 20
 date: 2026-03-24
+---
+
+## What You'll Learn
+
+- How to write tests using Python's built-in `unittest` framework
+- How to organize test classes and use `setUp` / `tearDown`
+- The most common assertion methods and when to use each
+- How to run tests from the command line
+- When to use `unittest` vs `pytest`
+
 ---
 
 ## What is unittest?
@@ -107,14 +117,14 @@ pytest can discover and run `unittest`-style tests automatically, so the two are
 
 ## Interview Questions
 
-> **Q: What is the difference between pytest and unittest?**
+> _Q: What is the difference between pytest and unittest?_
 
 `unittest` is Python's built-in framework, modeled after Java's JUnit — tests are written as methods inside a class that inherits from `unittest.TestCase`, and assertions use methods like `self.assertEqual()`. `pytest` is a third-party library where tests are plain functions using `assert`. pytest produces more readable output and has more powerful features (fixtures, parametrize). pytest can also run `unittest` tests, so they're compatible.
 
-> **Q: What is the purpose of `setUp` and `tearDown` in unittest?**
+> _Q: What is the purpose of `setUp` and `tearDown` in unittest?_
 
 `setUp` runs before each individual test method to prepare the test environment (e.g., create a database connection, initialize objects). `tearDown` runs after each test to clean up — even if the test failed. They're the `unittest` equivalent of pytest's fixture setup and teardown with `yield`.
 
-> **Q: Why does unittest use `self.assertEqual()` instead of plain `assert`?**
+> _Q: Why does unittest use `self.assertEqual()` instead of plain `assert`?_
 
 `self.assertEqual()` and other `TestCase` assertion methods provide better failure messages — they show you the actual vs. expected values when a test fails. Plain `assert` just raises `AssertionError` with no details. pytest works around this by rewriting `assert` statements at collection time to produce similarly detailed output.

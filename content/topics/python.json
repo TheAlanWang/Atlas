@@ -1,0 +1,7 @@
+{
+  "sections": [
+    { "title": "Introduction", "order": 1 },
+    { "title": "Fundamentals", "order": 2 },
+    { "title": "Testing", "order": 3 }
+  ]
+}

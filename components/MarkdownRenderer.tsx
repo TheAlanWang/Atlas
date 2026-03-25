@@ -2,6 +2,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import CodeBlock from "./CodeBlock";
 import { highlight } from "@/lib/highlight";
+import { slugify } from "@/lib/utils";
 
 type Props = { content: string };
 
@@ -27,6 +28,14 @@ export default async function MarkdownRenderer({ content }: Props) {
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
+          h2: ({ children }) => {
+            const id = slugify(String(children));
+            return <h2 id={id} className="scroll-mt-24">{children}</h2>;
+          },
+          h3: ({ children }) => {
+            const id = slugify(String(children));
+            return <h3 id={id} className="scroll-mt-24">{children}</h3>;
+          },
           pre: ({ children }) => <>{children}</>,
           code: ({ className, children }) => {
             const code = String(children).trimEnd();

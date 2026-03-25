@@ -208,11 +208,11 @@ Use `__slots__` when you're creating many instances of a class and memory is a c
 
 ## Interview Questions
 
-> **Q: What is the difference between a list and a tuple?**
+> _Q: What is the difference between a list and a tuple?_
 
 Both are ordered sequences, but lists are mutable (can be changed after creation) and tuples are immutable (cannot). Tuples are slightly faster and can be used as dictionary keys; lists cannot. Use a tuple when the data should not change.
 
-> **Q: Is Python pass-by-value or pass-by-reference?**
+> _Q: Is Python pass-by-value or pass-by-reference?_
 
 Neither — it's **pass-by-object-reference**. Mutable objects can be modified inside a function and affect the caller; immutable objects cannot.
 
@@ -228,42 +228,42 @@ print(a)  # [1, 2, 99]
 print(b)  # 10
 ```
 
-> **Q: What is a decorator and what is it used for?**
+> _Q: What is a decorator and what is it used for?_
 
 A decorator is a function that takes another function as input and returns a new function with added behavior. `@decorator` is syntactic sugar for `func = decorator(func)`. Common uses include logging, authentication checks, rate limiting, and caching (`@functools.lru_cache`).
 
-> **Q: What is a generator and how is it different from a list?**
+> _Q: What is a generator and how is it different from a list?_
 
 A generator produces values lazily using `yield` — it computes one value at a time on demand. A list stores all values in memory at once. Generators are memory-efficient for large datasets and infinite sequences. You can't index into a generator or iterate over it more than once.
 
-> **Q: How does the `with` statement work?**
+> _Q: How does the `with` statement work?_
 
 `with` calls `__enter__` on the context manager when entering the block and `__exit__` when leaving — even if an exception occurs. It guarantees resource cleanup (closing files, releasing locks) without needing explicit try/finally blocks.
 
-> **Q: What is the GIL?**
+> _Q: What is the GIL?_
 
 The Global Interpreter Lock ensures only one thread executes Python bytecode at a time. This means Python threads cannot run CPU-bound tasks in true parallel, but I/O-bound tasks (network requests, file I/O) are unaffected. For CPU-bound parallelism, use `multiprocessing` instead.
 
-> **Q: What is the difference between `__init__` and `__new__`?**
+> _Q: What is the difference between `__init__` and `__new__`?_
 
 `__new__` creates the object (allocates memory) and returns the instance. `__init__` initializes it (sets attributes) and returns nothing. You almost always only override `__init__`. `__new__` is used for singletons or when subclassing immutable types.
 
-> **Q: What is a lambda function? When would you use one over `def`?**
+> _Q: What is a lambda function? When would you use one over `def`?_
 
 A lambda is an anonymous single-expression function. Use it for short, throwaway logic — most commonly as a sort key or argument to `map`/`filter`. Use `def` when the function has a name, multiple statements, or is reused in multiple places.
 
-> **Q: What is the difference between `map`, `filter`, and `reduce`?**
+> _Q: What is the difference between `map`, `filter`, and `reduce`?_
 
 `map` applies a function to every element and returns the transformed results. `filter` keeps only the elements for which the function returns `True`. `reduce` (from `functools`) folds a list into a single value by applying a function cumulatively. In modern Python, list comprehensions are often cleaner than `map` and `filter`.
 
-> **Q: What is `__slots__` and when would you use it?**
+> _Q: What is `__slots__` and when would you use it?_
 
 `__slots__` replaces the per-instance `__dict__` with a fixed set of attributes, reducing memory usage by 40–50% for classes with many instances. Use it when you're creating a large number of objects and know exactly which attributes each instance will have. The trade-off is that you can't add new attributes dynamically.
 
-> **Q: What is list comprehension and when should you prefer it over a for loop?**
+> _Q: What is list comprehension and when should you prefer it over a for loop?_
 
 List comprehension is a concise syntax for building a list from an iterable: `[expr for item in iterable if condition]`. Prefer it when the logic is simple and fits on one line. Use a regular for loop when the logic is complex or has side effects.
 
-> **Q: When should you use `is` vs `==`?**
+> _Q: When should you use `is` vs `==`?_
 
 Use `is` only to check identity — specifically `if x is None` and `if x is not None`. Use `==` for all value comparisons. Never use `is` to compare strings or numbers — CPython caches small integers and interned strings, so `is` may return `True` by coincidence, but this is an implementation detail and not guaranteed.

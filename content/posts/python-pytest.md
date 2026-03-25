@@ -247,30 +247,30 @@ tests/test_math.py:12: AssertionError
 
 ## Interview Questions
 
-> **Q: What is the difference between `pytest` and `unittest`?**
+> _Q: What is the difference between `pytest` and `unittest`?_
 
 `unittest` is Python's built-in testing framework, modeled after Java's JUnit — tests are written as classes inheriting from `unittest.TestCase`. `pytest` is a third-party library with simpler syntax: tests are plain functions using `assert`. pytest can also run `unittest`-style tests, so the two are compatible.
 
-> **Q: What is a fixture in pytest?**
+> _Q: What is a fixture in pytest?_
 
 A fixture is a function decorated with `@pytest.fixture` that provides reusable setup for tests. Instead of duplicating setup code in every test, you define it once as a fixture and inject it by name. Fixtures can also handle teardown using `yield`.
 
-> **Q: What does `assert` do in a pytest test?**
+> _Q: What does `assert` do in a pytest test?_
 
 `assert` checks that an expression is `True`. If it's `False`, pytest catches the `AssertionError`, marks the test as failed, and shows you the actual vs. expected values. In regular Python code, a failed `assert` raises an exception — pytest hooks into this to produce readable failure messages.
 
-> **Q: What is `@pytest.mark.parametrize` used for?**
+> _Q: What is `@pytest.mark.parametrize` used for?_
 
 It lets you run the same test function with multiple sets of inputs and expected outputs without duplicating code. You declare argument names and a list of value tuples, and pytest generates a separate test case for each row. This keeps tests concise and makes it easy to add edge cases.
 
-> **Q: How do you test that a function raises an exception in pytest?**
+> _Q: How do you test that a function raises an exception in pytest?_
 
 Use `pytest.raises` as a context manager: `with pytest.raises(SomeException): call_that_raises()`. If the block does not raise the expected exception, the test fails. You can also capture the exception info with `as exc_info` to assert on the message.
 
-> **Q: What is the naming convention for test files and test functions in pytest?**
+> _Q: What is the naming convention for test files and test functions in pytest?_
 
 Test files should be named with the `test_` prefix (e.g., `test_calculator.py`). Test functions and methods must also start with `test_` (e.g., `def test_add()`). pytest discovers tests automatically by following these naming conventions, so nothing else needs to be configured.
 
-> **Q: How do you handle teardown (cleanup) in a pytest fixture?**
+> _Q: How do you handle teardown (cleanup) in a pytest fixture?_
 
 Use `yield` instead of `return` in the fixture. Everything before `yield` is setup; everything after is teardown and runs after the test completes — even if the test fails. For example, you can open a database connection before `yield` and close it after.

@@ -7,6 +7,16 @@ duration: 20
 date: 2026-03-21
 ---
 
+## What You'll Learn
+
+- How Python's dynamic typing works and how to use type hints
+- The core built-in types: `str`, `int`, `float`, `bool`, `None`
+- How string formatting with f-strings works
+- Type conversion and what happens when it fails
+- Why Python's type system is different from Java or C++
+
+---
+
 ## Variables
 
 Python variables don't need type declarations. Just assign a value and go:
@@ -123,30 +133,30 @@ fruits.append("cherry")  # modifies the original list
 
 ## Interview Questions
 
-> **Q: What is the difference between `is` and `==`?**
+> _Q: What is the difference between `is` and `==`?_
 
 `==` checks if two values are equal. `is` checks if two variables point to the exact same object in memory. For most comparisons use `==`. Use `is` only for `None` checks: `if x is None`.
 
-> **Q: Why is `bool` a subclass of `int` in Python?**
+> _Q: Why is `bool` a subclass of `int` in Python?_
 
 Historically, Python added `bool` as a subclass of `int` so `True` and `False` can be used directly in arithmetic (`True + True == 2`). It also means `isinstance(True, int)` returns `True`.
 
-> **Q: What does "dynamically typed" mean?**
+> _Q: What does "dynamically typed" mean?_
 
 The type is attached to the value, not the variable. A variable is just a name that points to an object. The same name can point to objects of different types at different times. This is in contrast to statically typed languages like Java, where the type is declared on the variable itself and cannot change.
 
-> **Q: What are Python's falsy values?**
+> _Q: What are Python's falsy values?_
 
 The falsy values in Python are: `0`, `0.0`, `""` (empty string), `[]` (empty list), `{}` (empty dict), `set()` (empty set), `None`, and `False`. Everything else is truthy. This matters any time a value is used in a boolean context, such as an `if` condition.
 
-> **Q: What is the difference between mutable and immutable types? Why does it matter?**
+> _Q: What is the difference between mutable and immutable types? Why does it matter?_
 
 Immutable types (`int`, `float`, `str`, `tuple`) cannot be changed after creation — operations on them return new objects. Mutable types (`list`, `dict`, `set`) can be modified in place. This matters when passing values to functions: mutating a mutable argument inside a function affects the caller's object, whereas reassigning an immutable one does not.
 
-> **Q: What are type hints for in Python, and do they enforce types at runtime?**
+> _Q: What are type hints for in Python, and do they enforce types at runtime?_
 
 Type hints (e.g., `name: str`, `-> int`) document the expected types for variables, parameters, and return values. They do not enforce anything at runtime — Python ignores them during execution. Their value is for static analysis tools (like mypy, Pyright) and IDEs that use them to catch type errors before the code runs.
 
-> **Q: What is the difference between `type()` and `isinstance()`?**
+> _Q: What is the difference between `type()` and `isinstance()`?_
 
 `type(x)` returns the exact type of `x`. `isinstance(x, T)` returns `True` if `x` is an instance of `T` or any subclass of `T`. Prefer `isinstance()` in most cases — for example, `isinstance(True, int)` returns `True` because `bool` is a subclass of `int`, while `type(True) == int` returns `False`.
