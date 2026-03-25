@@ -5,12 +5,12 @@ import { getAllTopics } from "@/lib/posts";
 
 export default async function Home() {
   const allPosts = await getAllPosts();
-  const recentPosts = allPosts.slice(0, 5);
+  const recentPosts = allPosts.slice(0, 10);
   const topics = await getAllTopics();
 
   return (
     <div className="space-y-10">
-      <section className="relative h-[600px] overflow-hidden left-1/2 -translate-x-1/2 w-screen -mt-16 mb-10">
+      <section className="relative h-120 overflow-hidden left-1/2 -translate-x-1/2 w-screen -mt-20 mb-10">
         <img
           src="/images/mountain.jpg"
           alt="hero"
@@ -23,7 +23,7 @@ export default async function Home() {
               "linear-gradient(to right, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0) 100%)",
           }}
         />
-        <div className="absolute inset-0 flex flex-col justify-end pb-30 fade-in-up-delay">
+        <div className="absolute inset-0 flex flex-col justify-end pb-10 fade-in-up-delay">
           <div className="max-w-6xl mx-auto px-12 w-full">
             <h1
               className="font-black text-white leading-tight tracking-tight mb-4 whitespace-nowrap"
@@ -58,28 +58,18 @@ export default async function Home() {
       </section>
 
       <section>
-        <h2 className="text-2xl font-black text-slate-900 mb-4">Languages</h2>
+        <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-4">
+          Languages
+        </h2>
         <div className="flex gap-4 overflow-x-auto pb-2">
-          <TopicCard
-            title="Python"
-            description="Variables, functions, OOP, and beyond."
-            href="/python"
-          />
-          <TopicCard
-            title="React"
-            description="Components, hooks, and Next.js."
-            href="/react"
-          />
-          <TopicCard
-            title="Java"
-            description="Components, hooks, and Next.js."
-            href="/java"
-          />
+          <TopicCard title="Python" href="/python" />
+          <TopicCard title="React" href="/react" />
+          <TopicCard title="Java" href="/java" />
         </div>
       </section>
 
       <section>
-        <h2 className="text-2xl font-black text-slate-900 mb-4">
+        <h2 className="text-1xl font-black text-slate-900 dark:text-white mb-4">
           Recent Posts
         </h2>
         {recentPosts.length === 0 ? (
