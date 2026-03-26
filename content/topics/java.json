@@ -2,20 +2,24 @@
   "category": "languages",
   "sections": [
     {
-      "title": "Foundations",
+      "title": "Fundamentals",
       "order": 1
     },
     {
-      "title": "Functions & Objects",
+      "title": "OOP",
       "order": 2
     },
     {
-      "title": "Advanced",
+      "title": "Concurrency",
       "order": 3
     },
     {
-      "title": "React & TypeScript",
+      "title": "Spring Boot",
       "order": 4
+    },
+    {
+      "title": "Interview",
+      "order": 5
     }
   ],
   "homepage": true

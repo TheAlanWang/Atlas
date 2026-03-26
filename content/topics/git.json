@@ -1,6 +1,14 @@
 {
+  "category": "tools",
   "sections": [
-    { "title": "Introduction", "order": 1 },
-    { "title": "Workflow", "order": 2 }
-  ]
+    {
+      "title": "Introduction",
+      "order": 1
+    },
+    {
+      "title": "Workflow",
+      "order": 2
+    }
+  ],
+  "homepage": true
 }

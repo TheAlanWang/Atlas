@@ -1,20 +1,20 @@
 {
-  "category": "languages",
+  "category": "systems",
   "sections": [
     {
-      "title": "Foundations",
+      "title": "Fundamentals",
       "order": 1
     },
     {
-      "title": "Functions & Objects",
+      "title": "Protocols",
       "order": 2
     },
     {
-      "title": "Advanced",
+      "title": "Application Layer",
       "order": 3
     },
     {
-      "title": "React & TypeScript",
+      "title": "Interview",
       "order": 4
     }
   ],

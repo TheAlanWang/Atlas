@@ -1,7 +1,18 @@
 {
+  "category": "ai",
   "sections": [
-    { "title": "Introduction", "order": 1 },
-    { "title": "Core Concepts", "order": 2 },
-    { "title": "Building", "order": 3 }
-  ]
+    {
+      "title": "Introduction",
+      "order": 1
+    },
+    {
+      "title": "Core Concepts",
+      "order": 2
+    },
+    {
+      "title": "Building",
+      "order": 3
+    }
+  ],
+  "homepage": false
 }

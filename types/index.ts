@@ -18,3 +18,14 @@ export type RoadmapSection = {
   title: string           // section name
   items: RoadmapItem[]    // posts in this section
 }
+
+export type TopicMeta = {
+  slug: string        // e.g. "python"
+  category: string    // e.g. "languages"
+  homepage: boolean   // whether to show in homepage TopicCard row
+}
+
+export type CategoryGroup = {
+  category: string    // e.g. "languages"
+  topics: TopicMeta[] // topics in this category
+}

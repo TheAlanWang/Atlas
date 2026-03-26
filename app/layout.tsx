@@ -4,10 +4,10 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Footer from "@/components/Footer";
-import { getAllTopics } from "@/lib/posts";
+import { getTopicsByCategory } from "@/lib/posts";
 import ChatWidget from "@/components/ChatWidget";
 
-const inter = Inter({ subsets: ["latin"] }); // google fonts
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Atlas",
@@ -19,12 +19,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const topics = await getAllTopics();
+  const categoryGroups = getTopicsByCategory();
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen`}>
         <ThemeProvider>
-          <Header topics={topics} />
+          <Header categoryGroups={categoryGroups} />
           <main className="max-w-6xl mx-auto px-6 pt-20 pb-16">{children}</main>
           <ChatWidget />
           <Footer />

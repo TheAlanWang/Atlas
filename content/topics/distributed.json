@@ -1,20 +1,20 @@
 {
-  "category": "languages",
+  "category": "systems",
   "sections": [
     {
-      "title": "Introduction",
+      "title": "Fundamentals",
       "order": 1
     },
     {
-      "title": "Fundamentals",
+      "title": "Messaging",
       "order": 2
     },
     {
-      "title": "Advanced",
+      "title": "Caching",
       "order": 3
     },
     {
-      "title": "Testing",
+      "title": "Architecture",
       "order": 4
     },
     {

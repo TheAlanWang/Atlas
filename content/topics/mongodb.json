@@ -1,20 +1,20 @@
 {
-  "category": "languages",
+  "category": "database",
   "sections": [
     {
-      "title": "Foundations",
+      "title": "Fundamentals",
       "order": 1
     },
     {
-      "title": "Functions & Objects",
+      "title": "Queries",
       "order": 2
     },
     {
-      "title": "Advanced",
+      "title": "Performance",
       "order": 3
     },
     {
-      "title": "React & TypeScript",
+      "title": "Interview",
       "order": 4
     }
   ],

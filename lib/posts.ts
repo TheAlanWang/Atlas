@@ -1,7 +1,7 @@
 import fs from "fs"; // Node.js built-in: read files from disk
 import path from "path"; // Node.js built-in: handle file paths cross-platform
 import matter from "gray-matter"; // split Markdown into frontmatter + body
-import type { Post, RoadmapSection, RoadmapItem } from "@/types"; // TypeScript types only, no runtime code
+import type { Post, RoadmapSection, RoadmapItem, TopicMeta, CategoryGroup } from "@/types"; // TypeScript types only, no runtime code
 
 // directory where Markdown posts are stored
 const POSTS_DIR = path.join(process.cwd(), "content/posts");
@@ -124,4 +124,33 @@ export async function getRoadmapSections(
 export async function getAllTopics(): Promise<string[]> {
   const posts = await getAllPosts();
   return [...new Set(posts.map((p) => p.topic))].sort();
+}
+
+// read category from content/topics/<slug>.json
+export function getTopicsMeta(): TopicMeta[] {
+  const topicsDir = path.join(process.cwd(), "content/topics");
+  if (!fs.existsSync(topicsDir)) return [];
+  return fs
+    .readdirSync(topicsDir)
+    .filter((f) => f.endsWith(".json"))
+    .map((f) => {
+      const slug = f.replace(/\.json$/, "");
+      const config = JSON.parse(fs.readFileSync(path.join(topicsDir, f), "utf8"));
+      return { slug, category: config.category ?? "other", homepage: config.homepage ?? false };
+    })
+    .sort((a, b) => a.slug.localeCompare(b.slug));
+}
+
+// group topics by category, preserving a fixed display order
+export function getTopicsByCategory(): CategoryGroup[] {
+  const CATEGORY_ORDER = ["languages", "frontend", "ai", "systems", "database", "tools", "other"];
+  const topics = getTopicsMeta();
+  const map = new Map<string, TopicMeta[]>();
+  for (const t of topics) {
+    if (!map.has(t.category)) map.set(t.category, []);
+    map.get(t.category)!.push(t);
+  }
+  return CATEGORY_ORDER
+    .filter((c) => map.has(c))
+    .map((c) => ({ category: c, topics: map.get(c)! }));
 }
