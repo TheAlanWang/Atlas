@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Footer from "@/components/Footer";
 import { getAllTopics } from "@/lib/posts";
+import ChatWidget from "@/components/ChatWidget";
 
 const inter = Inter({ subsets: ["latin"] }); // google fonts
 
@@ -25,6 +26,7 @@ export default async function RootLayout({
         <ThemeProvider>
           <Header topics={topics} />
           <main className="max-w-6xl mx-auto px-6 pt-20 pb-16">{children}</main>
+          <ChatWidget />
           <Footer />
         </ThemeProvider>
       </body>

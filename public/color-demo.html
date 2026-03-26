@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blue Color Demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      background: #f5f5f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      font-family: system-ui, sans-serif;
+    }
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .bubble {
+      max-width: 200px;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 14px;
+      color: white;
+    }
+    .label {
+      font-size: 11px;
+      color: #999;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .hex {
+      font-size: 12px;
+      color: #bbb;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="item">
+    <div class="bubble" style="background: #2563EB;">
+      This is the current blue used on the site.
+    </div>
+    <div class="label">Current · Tailwind blue-600</div>
+    <div class="hex">#2563EB</div>
+  </div>
+
+  <div class="item">
+    <div class="bubble" style="background: #007AFF;">
+      This is Apple blue, like iMessage bubbles.
+    </div>
+    <div class="label">Apple blue</div>
+    <div class="hex">#007AFF</div>
+  </div>
+
+  <div class="item">
+    <div class="bubble" style="background: #0071E3;">
+      This is Apple's button blue, slightly darker.
+    </div>
+    <div class="label">Apple button blue</div>
+    <div class="hex">#0071E3</div>
+  </div>
+
+</body>
+</html>

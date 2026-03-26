@@ -22,23 +22,26 @@ export default async function Home() {
           <TopicCard title="React" href="/react" />
           <TopicCard title="Java" href="/java" />
           <TopicCard title="Git" href="/git" />
+          <TopicCard title="LLM" href="/llm" />
+          <TopicCard title="TypeScript" href="/typescript" />
+          <TopicCard title="RAG" href="/rag" />
         </div>
       </section>
 
       <section className="relative left-1/2 -translate-x-1/2 w-screen bg-slate-100 dark:bg-slate-800/50 mt-4 py-12 -mb-16">
         <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-6">
-          Recent Posts
-        </h2>
-        {recentPosts.length === 0 ? (
-          <p className="text-slate-400 text-sm">No posts yet.</p>
-        ) : (
-          <div>
-            {recentPosts.map((p) => (
-              <PostCard key={p.slug} post={p} />
-            ))}
-          </div>
-        )}
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-6">
+            Recent Posts
+          </h2>
+          {recentPosts.length === 0 ? (
+            <p className="text-slate-400 text-sm">No posts yet.</p>
+          ) : (
+            <div>
+              {recentPosts.map((p) => (
+                <PostCard key={p.slug} post={p} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>

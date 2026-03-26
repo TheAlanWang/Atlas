@@ -1,0 +1,8 @@
+{
+  "sections": [
+    { "title": "Foundations", "order": 1 },
+    { "title": "Using LLM APIs", "order": 2 },
+    { "title": "RAG", "order": 3 },
+    { "title": "Prompt Engineering", "order": 4 }
+  ]
+}
