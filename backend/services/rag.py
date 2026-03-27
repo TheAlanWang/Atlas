@@ -6,10 +6,9 @@ from typing import AsyncGenerator
 
 # Use getenv so the module is importable without env vars (e.g. during test collection)
 openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY", ""))
-supabase_client: Client = create_client(
-    os.getenv("SUPABASE_URL", ""),
-    os.getenv("SUPABASE_ANON_KEY", ""),
-)
+_supabase_url = os.getenv("SUPABASE_URL", "")
+_supabase_key = os.getenv("SUPABASE_ANON_KEY", "")
+supabase_client: Client = create_client(_supabase_url, _supabase_key) if _supabase_url else None  # type: ignore
 
 SYSTEM_PROMPT = """You are a helpful assistant for the Atlas learning platform.
 Answer questions based ONLY on the context below.
