@@ -10,6 +10,7 @@ export function slugify(text: string): string {
 
 // extract ## and ### headings from raw markdown content
 export function extractHeadings(content: string) {
+  const seen = new Map<string, number>();
   return content
     .split("\n")
     .flatMap((line) => {
@@ -17,7 +18,11 @@ export function extractHeadings(content: string) {
       if (!match) return [];
       const level = match[1].length as 2 | 3;
       const text = match[2].trim();
-      return [{ level, text, id: slugify(text) }];
+      const base = slugify(text) || "heading";
+      const count = seen.get(base) ?? 0;
+      seen.set(base, count + 1);
+      const id = count === 0 ? base : `${base}-${count}`;
+      return [{ level, text, id }];
     });
 }
 

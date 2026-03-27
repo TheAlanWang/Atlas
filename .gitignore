@@ -46,4 +46,5 @@ next-env.d.ts
 __pycache__/
 *.pyc
 *.pyo
+**/venv/
 backend/eval/results.json

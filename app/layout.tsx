@@ -4,7 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Footer from "@/components/Footer";
-import { getTopicsByCategory } from "@/lib/posts";
+import { getTopicsByCategory, getAllPosts } from "@/lib/posts";
 import ChatWidget from "@/components/ChatWidget";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,11 +20,18 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const categoryGroups = getTopicsByCategory();
+  const allPosts = await getAllPosts();
+  const searchItems = allPosts.map((p) => ({
+    title: p.title,
+    topic: p.topic,
+    section: p.section,
+    slug: p.slug,
+  }));
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen`}>
         <ThemeProvider>
-          <Header categoryGroups={categoryGroups} />
+          <Header categoryGroups={categoryGroups} searchItems={searchItems} />
           <main className="max-w-6xl mx-auto px-6 pt-20 pb-16">{children}</main>
           <ChatWidget />
           <Footer />

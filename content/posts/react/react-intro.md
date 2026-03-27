@@ -33,6 +33,20 @@ function Greeting({ name }) {
 <Greeting name="Alan" />
 ```
 
+## What is the DOM?
+
+The **DOM (Document Object Model)** is the browser's internal representation of a web page. When the browser loads HTML, it parses it into a tree of objects — every `<div>`, `<p>`, and `<button>` becomes a node in this tree. JavaScript can read and modify this tree to dynamically update what the user sees.
+
+```
+HTML:                        DOM tree:
+<div>                        div
+  <h1>Hello</h1>    →          h1 → "Hello"
+  <p>World</p>                 p  → "World"
+</div>
+```
+
+Directly manipulating the DOM is slow when done repeatedly — every change can trigger the browser to recalculate layout and repaint the screen. This is the problem React's Virtual DOM solves.
+
 ## The Virtual DOM
 
 React doesn't update the real DOM directly on every change — that would be slow. Instead, it maintains a **virtual DOM**: a lightweight JavaScript copy of the real DOM.

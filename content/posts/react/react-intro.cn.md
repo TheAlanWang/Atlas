@@ -33,6 +33,20 @@ function Greeting({ name }) {
 <Greeting name="Alan" />
 ```
 
+## 什么是 DOM？
+
+**DOM（文档对象模型，Document Object Model）** 是浏览器对网页的内部表示。浏览器加载 HTML 后，会将其解析成一棵对象树——每个 `<div>`、`<p>`、`<button>` 都变成这棵树上的一个节点。JavaScript 可以读取和修改这棵树，从而动态更新用户看到的内容。
+
+```
+HTML：                       DOM 树：
+<div>                        div
+  <h1>你好</h1>    →           h1 → "你好"
+  <p>世界</p>                  p  → "世界"
+</div>
+```
+
+频繁直接操作 DOM 很慢——每次改动都可能触发浏览器重新计算布局并重绘页面。这正是 React 虚拟 DOM 要解决的问题。
+
 ## 虚拟 DOM
 
 React 不会在每次变更时直接操作真实 DOM——那样太慢了。它维护一个**虚拟 DOM**：真实 DOM 的轻量 JavaScript 副本。

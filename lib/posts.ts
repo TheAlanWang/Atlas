@@ -6,10 +6,42 @@ import type { Post, RoadmapSection, RoadmapItem, TopicMeta, CategoryGroup } from
 // directory where Markdown posts are stored
 const POSTS_DIR = path.join(process.cwd(), "content/posts");
 
+// recursively find a post file by slug across all topic subdirectories
+function findPostFile(slug: string, cn = false): string | null {
+  const suffix = cn ? ".cn.md" : ".md";
+  if (!fs.existsSync(POSTS_DIR)) return null;
+  for (const entry of fs.readdirSync(POSTS_DIR, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      const candidate = path.join(POSTS_DIR, entry.name, `${slug}${suffix}`);
+      if (fs.existsSync(candidate)) return candidate;
+    }
+  }
+  return null;
+}
+
+// get all .md files (non-cn) from all topic subdirectories
+function getAllPostFiles(): { slug: string; filePath: string }[] {
+  if (!fs.existsSync(POSTS_DIR)) return [];
+  const results: { slug: string; filePath: string }[] = [];
+  for (const entry of fs.readdirSync(POSTS_DIR, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      const subDir = path.join(POSTS_DIR, entry.name);
+      for (const file of fs.readdirSync(subDir)) {
+        if (file.endsWith(".md") && !file.endsWith(".cn.md")) {
+          results.push({
+            slug: file.replace(/\.md$/, ""),
+            filePath: path.join(subDir, file),
+          });
+        }
+      }
+    }
+  }
+  return results;
+}
+
 // check if a Chinese version (.cn.md) exists for a given slug
 export function hasCnVersion(slug: string): boolean {
-  const filePath = path.join(POSTS_DIR, `${slug}.cn.md`);
-  return fs.existsSync(filePath);
+  return findPostFile(slug, true) !== null;
 }
 
 // parse a single Markdown file into a Post object
@@ -37,14 +69,10 @@ function parsePost(slug: string, fileContents: string) {
 
 // get all posts, sorted by date descending
 export async function getAllPosts(): Promise<Post[]> {
-  if (!fs.existsSync(POSTS_DIR)) return [];
-  const files = fs
-    .readdirSync(POSTS_DIR)
-    .filter((f) => f.endsWith(".md") && !f.endsWith(".cn.md"));
+  const files = getAllPostFiles();
   const posts = await Promise.all(
-    files.map(async (file) => {
-      const slug = file.replace(/\.md$/, "");
-      const raw = fs.readFileSync(path.join(POSTS_DIR, file), "utf8");
+    files.map(async ({ slug, filePath }) => {
+      const raw = fs.readFileSync(filePath, "utf8");
       const { rawContent, ...meta } = parsePost(slug, raw);
       return { ...meta, content: rawContent };
     }),
@@ -56,8 +84,8 @@ export async function getAllPosts(): Promise<Post[]> {
 
 // get a single post by slug (filename without .md)
 export async function getPost(slug: string): Promise<Post | null> {
-  const filePath = path.join(POSTS_DIR, `${slug}.md`);
-  if (!fs.existsSync(filePath)) return null;
+  const filePath = findPostFile(slug);
+  if (!filePath) return null;
   const raw = fs.readFileSync(filePath, "utf8");
   const { rawContent, ...meta } = parsePost(slug, raw);
   return { ...meta, content: rawContent };
@@ -65,8 +93,8 @@ export async function getPost(slug: string): Promise<Post | null> {
 
 // get the Chinese version of a post (returns null if not found)
 export async function getPostCn(slug: string): Promise<Post | null> {
-  const filePath = path.join(POSTS_DIR, `${slug}.cn.md`);
-  if (!fs.existsSync(filePath)) return null;
+  const filePath = findPostFile(slug, true);
+  if (!filePath) return null;
   const raw = fs.readFileSync(filePath, "utf8");
   const { rawContent, ...meta } = parsePost(slug, raw);
   return { ...meta, content: rawContent };
@@ -136,14 +164,14 @@ export function getTopicsMeta(): TopicMeta[] {
     .map((f) => {
       const slug = f.replace(/\.json$/, "");
       const config = JSON.parse(fs.readFileSync(path.join(topicsDir, f), "utf8"));
-      return { slug, category: config.category ?? "other", homepage: config.homepage ?? false };
+      return { slug, category: config.category ?? "other", homepage: config.homepage ?? false, parent: config.parent };
     })
     .sort((a, b) => a.slug.localeCompare(b.slug));
 }
 
 // group topics by category, preserving a fixed display order
 export function getTopicsByCategory(): CategoryGroup[] {
-  const CATEGORY_ORDER = ["languages", "frontend", "ai", "systems", "database", "tools", "other"];
+  const CATEGORY_ORDER = ["ai", "languages", "frontend", "systems", "database", "tools", "other"];
   const topics = getTopicsMeta();
   const map = new Map<string, TopicMeta[]>();
   for (const t of topics) {

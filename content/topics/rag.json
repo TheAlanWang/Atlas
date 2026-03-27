@@ -1,5 +1,6 @@
 {
   "category": "ai",
+  "parent": "llm",
   "sections": [
     {
       "title": "Introduction",
@@ -10,8 +11,12 @@
       "order": 2
     },
     {
-      "title": "Building",
+      "title": "Pipeline",
       "order": 3
+    },
+    {
+      "title": "Evaluation",
+      "order": 4
     }
   ],
   "homepage": false

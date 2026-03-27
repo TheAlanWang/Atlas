@@ -38,7 +38,8 @@ export default async function TopicPage({ params, searchParams }: Props) {
   const activePost = activeSlug ? await getPost(activeSlug) : null;
   const cnPost =
     activePost && hasCnVersion(activeSlug) ? await getPostCn(activeSlug) : null;
-  const headings = activePost ? extractHeadings(activePost.content) : [];
+  const enHeadings = activePost ? extractHeadings(activePost.content) : [];
+  const cnHeadings = cnPost ? extractHeadings(cnPost.content) : [];
 
   return (
     <div className="flex gap-6 -mx-6 px-2">
@@ -62,6 +63,8 @@ export default async function TopicPage({ params, searchParams }: Props) {
                   date={formatDate(activePost.date)}
                   enContent={<MarkdownRenderer content={activePost.content} />}
                   cnContent={<MarkdownRenderer content={cnPost.content} />}
+                  enHeadings={enHeadings}
+                  cnHeadings={cnHeadings}
                 />
               ) : (
                 <>
@@ -81,7 +84,7 @@ export default async function TopicPage({ params, searchParams }: Props) {
             <p className="text-slate-400">Select a topic from the roadmap.</p>
           )}
         </div>
-      <TableOfContents headings={headings} />
+      {!cnPost && <TableOfContents headings={enHeadings} />}
       </div>
     </div>
   );

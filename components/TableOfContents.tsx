@@ -35,7 +35,7 @@ export default function TableOfContents({ headings }: Props) {
     return () => observerRef.current?.disconnect();
   }, [headings]);
 
-  if (headings.length === 0) return null;
+  if (!headings || headings.length === 0) return null;
 
   return (
     <aside className="w-40 shrink-0 hidden xl:block sticky top-24 self-start">

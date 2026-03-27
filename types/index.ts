@@ -23,6 +23,7 @@ export type TopicMeta = {
   slug: string        // e.g. "python"
   category: string    // e.g. "languages"
   homepage: boolean   // whether to show in homepage TopicCard row
+  parent?: string     // e.g. "llm" — indicates this topic lives under another topic in the nav
 }
 
 export type CategoryGroup = {

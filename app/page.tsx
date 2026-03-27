@@ -1,4 +1,4 @@
-import TopicCard from "@/components/TopicCard";
+import TopicCarousel from "@/components/TopicCarousel";
 import PostCard from "@/components/PostCard";
 import HeroParallax from "@/components/HeroParallax";
 import { getAllPosts, getTopicsByCategory } from "@/lib/posts";
@@ -25,13 +25,9 @@ export default async function Home() {
         <h2 className="text-5xl font-black text-slate-900 dark:text-white mb-10">
           Topics
         </h2>
-        <div className="flex gap-2 overflow-x-auto pb-2">
-          {categoryGroups.flatMap(({ topics }) =>
-            topics.filter((t) => t.homepage).map((t) => (
-              <TopicCard key={t.slug} title={t.slug} href={`/${t.slug}`} />
-            ))
-          )}
-        </div>
+        <TopicCarousel
+          topics={categoryGroups.flatMap(({ topics }) => topics.filter((t) => t.homepage))}
+        />
       </section>
 
       <section className="relative left-1/2 -translate-x-1/2 w-screen bg-slate-100 dark:bg-slate-800/50 mt-4 py-12 -mb-16">
