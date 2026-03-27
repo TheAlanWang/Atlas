@@ -1,6 +1,7 @@
 import pytest
 import json
 from unittest.mock import AsyncMock, MagicMock, patch
+from backend.services.rag import embed, retrieve, stream_generate
 
 
 @pytest.fixture
@@ -18,8 +19,11 @@ async def test_embed_returns_vector():
 
     with patch("backend.services.rag.openai_client") as mock_openai:
         mock_openai.embeddings.create = AsyncMock(return_value=mock_response)
-        from backend.services.rag import embed
         result = await embed("what is RAG?")
+        mock_openai.embeddings.create.assert_called_once_with(
+            model="text-embedding-3-small",
+            input="what is RAG?",
+        )
 
     assert result == [0.1, 0.2, 0.3]
 
@@ -38,8 +42,6 @@ async def test_retrieve_returns_docs():
          patch("backend.services.rag.supabase_client") as mock_supabase:
         mock_openai.embeddings.create = AsyncMock(return_value=mock_embed_response)
         mock_supabase.rpc.return_value = mock_rpc
-
-        from backend.services.rag import retrieve
         result = await retrieve("what is RAG?")
 
     assert len(result) == 1
@@ -58,8 +60,6 @@ async def test_stream_generate_yields_sources_first(mock_docs):
 
     with patch("backend.services.rag.openai_client") as mock_openai:
         mock_openai.chat.completions.create = AsyncMock(return_value=mock_completion)
-
-        from backend.services.rag import stream_generate
         chunks = []
         async for chunk in stream_generate("what is RAG?", mock_docs, []):
             chunks.append(chunk)
@@ -68,6 +68,13 @@ async def test_stream_generate_yields_sources_first(mock_docs):
     first = json.loads(chunks[0].removeprefix("data: ").strip())
     assert "sources" in first
     assert first["sources"][0]["slug"] == "rag-intro"
+
+    # At least one text chunk must appear between sources and [DONE]
+    text_chunks = [
+        c for c in chunks[1:-1]
+        if "text" in json.loads(c.removeprefix("data: ").strip())
+    ]
+    assert len(text_chunks) >= 1
 
     # Last chunk must be [DONE]
     assert chunks[-1].strip() == "data: [DONE]"
@@ -90,8 +97,6 @@ async def test_stream_generate_deduplicates_sources():
 
     with patch("backend.services.rag.openai_client") as mock_openai:
         mock_openai.chat.completions.create = AsyncMock(return_value=mock_completion)
-
-        from backend.services.rag import stream_generate
         chunks = []
         async for chunk in stream_generate("what is RAG?", duplicate_docs, []):
             chunks.append(chunk)
