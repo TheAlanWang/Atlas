@@ -1,0 +1,6 @@
+openai
+supabase
+ragas
+datasets
+python-dotenv
+langchain-openai
