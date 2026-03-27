@@ -1,12 +1,14 @@
+import json
 import os
 from openai import AsyncOpenAI
 from supabase import create_client, Client
 from typing import AsyncGenerator
 
-openai_client = AsyncOpenAI(api_key=os.environ["OPENAI_API_KEY"])
+# Use getenv so the module is importable without env vars (e.g. during test collection)
+openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY", ""))
 supabase_client: Client = create_client(
-    os.environ["SUPABASE_URL"],
-    os.environ["SUPABASE_ANON_KEY"],
+    os.getenv("SUPABASE_URL", ""),
+    os.getenv("SUPABASE_ANON_KEY", ""),
 )
 
 SYSTEM_PROMPT = """You are a helpful assistant for the Atlas learning platform.
@@ -57,7 +59,6 @@ async def stream_generate(
             seen.add(d["slug"])
             sources.append({"title": d["title"], "slug": d["slug"], "topic": d["topic"]})
 
-    import json
     yield f"data: {json.dumps({'sources': sources})}\n\n"
 
     stream = await openai_client.chat.completions.create(
