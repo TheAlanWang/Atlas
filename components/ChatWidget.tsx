@@ -41,7 +41,10 @@ export default function ChatWidget() {
       { role: "assistant", content: "", sources: [] },
     ]);
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chat`, {
+    const chatUrl = process.env.NEXT_PUBLIC_API_URL
+      ? `${process.env.NEXT_PUBLIC_API_URL}/chat`
+      : "/api/chat";
+    const res = await fetch(chatUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
