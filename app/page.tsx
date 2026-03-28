@@ -21,8 +21,8 @@ export default async function Home() {
     <div className="space-y-10">
       <HeroParallax articleCount={allPosts.length} topicCount={categoryGroups.flatMap(g => g.topics).length} />
 
-      <section className="mt-28">
-        <h2 className="text-5xl font-black text-slate-900 dark:text-white mb-10">
+      <section className="mt-16 md:mt-28">
+        <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-6 md:mb-10">
           Topics
         </h2>
         <TopicCarousel

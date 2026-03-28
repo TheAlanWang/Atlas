@@ -24,6 +24,7 @@ export default function RoadmapSidebar({
       .map((s) => s.title)
   );
   const [openSections, setOpenSections] = useState<Set<string>>(initialOpen);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   // called when user clicks a section title
   function toggleSection(title: string) {
@@ -38,11 +39,20 @@ export default function RoadmapSidebar({
   }
 
   return (
-    <nav className="w-44 shrink-0">
-      <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3">
+    <nav className="md:w-44 md:shrink-0">
+      <button
+        onClick={() => setMobileOpen(!mobileOpen)}
+        className="md:hidden flex items-center gap-2 w-full text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3"
+      >
+        <span>{mobileOpen ? "▼" : "▶"}</span>
+        Roadmap
+      </button>
+
+      <p className="hidden md:block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3">
         Roadmap
       </p>
-      <div className="space-y-1">
+
+      <div className={`space-y-1 ${mobileOpen ? "block" : "hidden"} md:block`}>
         {/* loop through each section */}
         {sections.map((section) => {
           // is this section currently open?

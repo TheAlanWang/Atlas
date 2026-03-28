@@ -42,7 +42,7 @@ export default async function TopicPage({ params, searchParams }: Props) {
   const cnHeadings = cnPost ? extractHeadings(cnPost.content) : [];
 
   return (
-    <div className="flex gap-6 -mx-6 px-2">
+    <div className="flex flex-col md:flex-row gap-6 -mx-6 px-2">
       {/* RoadmapSidebar used here for the first time — defined back in Task 6 */}
       <RoadmapSidebar
         sections={sections}

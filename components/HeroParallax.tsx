@@ -42,11 +42,11 @@ export default function HeroParallax({ articleCount, topicCount }: Props) {
       />
 
       {/* text layer — scrolls at normal speed */}
-      <div className="absolute inset-0 flex flex-col justify-end pb-24 fade-in-up-delay">
-        <div className="max-w-6xl mx-auto px-12 w-full">
+      <div className="absolute inset-0 flex flex-col justify-end pb-12 md:pb-24 fade-in-up-delay">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 w-full">
           <h1
-            className="font-black text-white leading-tight tracking-tight mb-4 whitespace-nowrap"
-            style={{ fontSize: "clamp(32px, 4vw, 52px)" }}
+            className="font-black text-white leading-tight tracking-tight mb-4"
+            style={{ fontSize: "clamp(24px, 4vw, 52px)" }}
           >
             Every concept has a place on the map.
           </h1>

@@ -109,7 +109,7 @@ export default function ChatWidget() {
 
       {/* Chat dialog — only rendered when open is true */}
       {open && (
-        <div className="fixed bottom-20 right-6 z-50 w-80 h-[450px] bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl flex flex-col border border-zinc-200 dark:border-zinc-700">
+        <div className="fixed bottom-20 left-3 right-3 md:left-auto md:right-6 md:w-80 z-50 h-[70vh] md:h-[450px] bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl flex flex-col border border-zinc-200 dark:border-zinc-700">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-200 dark:border-zinc-700">
             <span className="font-semibold text-sm">Atlas AI Assistant</span>
