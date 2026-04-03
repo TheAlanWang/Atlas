@@ -1,0 +1,11 @@
+{
+  "category": "ai",
+  "parent": "llm",
+  "homepage": true,
+  "sections": [
+    {
+      "title": "Fundamentals",
+      "order": 1
+    }
+  ]
+}

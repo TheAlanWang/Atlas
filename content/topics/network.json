@@ -1,0 +1,22 @@
+{
+  "category": "systems",
+  "sections": [
+    {
+      "title": "Fundamentals",
+      "order": 1
+    },
+    {
+      "title": "Protocols",
+      "order": 2
+    },
+    {
+      "title": "Application Layer",
+      "order": 3
+    },
+    {
+      "title": "Interview",
+      "order": 4
+    }
+  ],
+  "homepage": true
+}

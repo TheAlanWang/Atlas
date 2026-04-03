@@ -1,0 +1,65 @@
+{
+  "sections": [
+    {
+      "title": "Introduction",
+      "items": [
+        { "label": "Introduction to Python", "slug": "python-intro" }
+      ]
+    },
+    {
+      "title": "Python Basics",
+      "items": [
+        { "label": "Variables & Types", "slug": "python-variables" },
+        { "label": "Control Flow", "slug": "python-control-flow" },
+        { "label": "Error Handling", "slug": "python-error-handling" }
+      ]
+    },
+    {
+      "title": "Data Structures",
+      "items": [
+        { "label": "Lists & Dicts", "slug": "python-lists-dicts" },
+        { "label": "Sets & Tuples", "slug": "python-sets-tuples" },
+        { "label": "Strings", "slug": "python-strings" },
+        { "label": "Comprehensions", "slug": "python-comprehensions" }
+      ]
+    },
+    {
+      "title": "Functions & Scope",
+      "items": [
+        { "label": "Functions", "slug": "python-functions" },
+        { "label": "Scope & LEGB", "slug": "python-scope-legb" },
+        { "label": "Closures", "slug": "python-closure" }
+      ]
+    },
+    {
+      "title": "OOP",
+      "items": [
+        { "label": "Classes & OOP", "slug": "python-classes" },
+        { "label": "Inheritance", "slug": "python-inheritance" },
+        { "label": "Magic Methods", "slug": "python-magic-methods" }
+      ]
+    },
+    {
+      "title": "Advanced Python",
+      "items": [
+        { "label": "Decorators", "slug": "python-decorator" },
+        { "label": "Generators", "slug": "python-generator" },
+        { "label": "Context Managers", "slug": "python-context-managers" },
+        { "label": "GIL & Concurrency", "slug": "python-gil-concurrency" }
+      ]
+    },
+    {
+      "title": "Testing",
+      "items": [
+        { "label": "Testing with pytest", "slug": "python-pytest" },
+        { "label": "Testing with unittest", "slug": "python-unittest" }
+      ]
+    },
+    {
+      "title": "Interview Patterns",
+      "items": [
+        { "label": "Python Interview Basics", "slug": "python-interview-basics" }
+      ]
+    }
+  ]
+}

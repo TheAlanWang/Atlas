@@ -1,0 +1,12 @@
+{
+  "topic": "distributed",
+  "title": "Kafka Sketches",
+  "items": [
+    {
+      "slug": "kafka-overview",
+      "title": "Kafka Overview",
+      "date": "2026-03-30",
+      "excerpt": "A quick structural sketch of brokers, partitions, consumer groups, and replication."
+    }
+  ]
+}

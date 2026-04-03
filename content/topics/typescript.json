@@ -1,0 +1,22 @@
+{
+  "category": "languages",
+  "sections": [
+    {
+      "title": "Foundations",
+      "order": 1
+    },
+    {
+      "title": "Functions & Objects",
+      "order": 2
+    },
+    {
+      "title": "Advanced",
+      "order": 3
+    },
+    {
+      "title": "React & TypeScript",
+      "order": 4
+    }
+  ],
+  "homepage": true
+}

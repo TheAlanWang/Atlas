@@ -1,0 +1,39 @@
+{
+  "category": "languages",
+  "sections": [
+    {
+      "title": "Introduction",
+      "order": 1
+    },
+    {
+      "title": "Python Basics",
+      "order": 2
+    },
+    {
+      "title": "Data Structures",
+      "order": 3
+    },
+    {
+      "title": "Functions & Scope",
+      "order": 4
+    },
+    {
+      "title": "OOP",
+      "order": 5
+    },
+    {
+      "title": "Advanced Python",
+      "order": 6
+    },
+    {
+      "title": "Testing",
+      "order": 7
+    },
+    {
+      "title": "Interview Patterns",
+      "order": 8
+    }
+  ],
+  "homepage": true,
+  "order": 1
+}

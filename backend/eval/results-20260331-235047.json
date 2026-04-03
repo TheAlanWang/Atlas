@@ -1,0 +1,41 @@
+[
+  {
+    "user_input":"What are the two phases of a RAG pipeline?",
+    "retrieved_contexts":[
+      "A RAG pipeline has two phases. In the offline indexing phase, documents are chunked, embedded, and stored in a retrieval system. In the online query phase, the user's question is embedded, relevant chunks are retrieved, optional filtering or reranking is applied, a context window is built from the selected chunks, and the LLM generates an answer grounded in that context.\n\n> _Q: Why do people separate indexing from query-time retrieval?_",
+      "## In This Chapter\n\n- The main idea behind this part of the RAG system\n- The trade-offs that matter in practice\n- The interview framing that makes the topic easier to explain\n\n---\n\n\n## What a RAG Pipeline Actually Is\n\nA RAG system has one job: fetch the right context before asking the model to answer.\n\nThat sounds simple, but in practice it means you are running two separate pipelines:\n\n```text\nOFFLINE \/ INDEXING\ndocuments -> chunk -> embed -> store",
+      "- chunking strategy\n- embeddings\n- vector databases\n- metadata filtering\n- retrieval optimization\n- evaluation\n\nIf one article tries to fully teach all of those, it stops being a pipeline overview and becomes repetitive.\n\n## Key Questions\n\n> _Q: Walk me through a RAG pipeline from documents to final answer._"
+    ],
+    "response":"The two phases of a RAG pipeline are the offline indexing phase and the online query phase.",
+    "reference":"The two phases are: the offline indexing phase (documents are chunked, embedded, and stored in a vector database) and the online query phase (the user question is embedded, relevant chunks are retrieved via similarity search, and an LLM generates a grounded answer).",
+    "faithfulness":1.0,
+    "answer_relevancy":1.0,
+    "context_precision":1.0
+  },
+  {
+    "user_input":"Why do we chunk documents before embedding them?",
+    "retrieved_contexts":[
+      "Chunking is the process of splitting source documents into smaller retrievable units before embedding them. It is necessary because long documents are too broad to embed and retrieve effectively as a single vector.\n\n> _Q: What is the tradeoff between small and large chunks?_",
+      "## In This Chapter\n\n- The main idea behind this part of the RAG system\n- The trade-offs that matter in practice\n- The interview framing that makes the topic easier to explain\n\n---\n\n\n## Why Chunking Exists\n\nRAG systems usually do not retrieve whole documents. They retrieve smaller pieces of them.\n\nThat is what chunking does:\n\n- split a document into smaller units\n- embed those units separately\n- retrieve only the units most relevant to the query",
+      "Without chunking, a long document gets compressed into one broad embedding and retrieval becomes too coarse.\n\n## The Real Tradeoff\n\nChunking is a tradeoff between:\n\n- precision\n- context\n\nSmall chunks improve precision because each chunk stays focused on one idea.\nLarge chunks preserve more surrounding context.\n\nNeither extreme is ideal:\n\n- too small: the answer-bearing fact is detached from its explanation\n- too large: multiple ideas are blended into one embedding"
+    ],
+    "response":"Chunking documents before embedding them is necessary because long documents are too broad to embed and retrieve effectively as a single vector. It allows for the retrieval of smaller, more relevant pieces of information.",
+    "reference":"Embedding models have a token limit and produce a single vector per input. Chunking ensures each piece is small enough to embed and topically focused, which improves retrieval precision \u2014 a 500-token chunk is more likely to be relevant to a specific query than a 5000-token document.",
+    "faithfulness":1.0,
+    "answer_relevancy":0.931165788,
+    "context_precision":1.0
+  },
+  {
+    "user_input":"What is the purpose of overlap in chunking?",
+    "retrieved_contexts":[
+      "Small chunks improve precision because each embedding represents a narrow idea, but they may lose surrounding context. Large chunks preserve context, but they blur multiple ideas together and consume more context budget during generation.\n\n> _Q: Why is overlap used in chunking?_\n\nOverlap helps preserve information near chunk boundaries so important context is not split apart. But too much overlap creates duplicates, which can hurt retrieval quality and waste context window space.",
+      "Overlap exists because useful context often sits near chunk boundaries.\n\nWithout overlap, a key sentence can get cut away from the sentence that explains it.\n\nToo much overlap, however, creates duplicates and increases retrieval noise.\n\nSo overlap should be treated as a controlled compromise, not a default to maximize blindly.\n\n## How to Choose a Starting Point\n\nA practical starting point is:\n\n- moderate token size\n- small overlap\n- structure-aware or recursive splitting",
+      "This is easy to implement and a good baseline, but it can break semantic boundaries.\n\n### Structure-aware chunking\n\nSplit on paragraphs, sections, or headings first.\n\nThis usually produces more coherent chunks because document structure is preserved.\n\n### Recursive chunking\n\nTry larger semantic boundaries first, then fall back to smaller ones until the chunk fits the target size.\n\nThis is a strong default for general-purpose RAG systems.\n\n## Why Overlap Helps"
+    ],
+    "response":"Overlap is used in chunking to help preserve information near chunk boundaries so that important context is not split apart. It ensures that key sentences are not separated from the sentences that explain them. However, overlap should be treated as a controlled compromise, as too much overlap can create duplicates, increase retrieval noise, and waste context window space.",
+    "reference":"Overlap ensures that key sentences at the boundary between two chunks are not cut off. Without overlap, context that spans a chunk boundary would be split and lost. A typical overlap is 50-100 tokens.",
+    "faithfulness":1.0,
+    "answer_relevancy":1.0,
+    "context_precision":1.0
+  }
+]

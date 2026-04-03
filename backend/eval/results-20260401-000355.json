@@ -1,0 +1,15 @@
+[
+  {
+    "user_input":"What is cosine similarity used for in RAG?",
+    "retrieved_contexts":[
+      "Instead of searching across every chunk in the system, you first restrict the search space to the subset that could possibly contain the answer.\n\n## Why It Matters in RAG\n\nVector similarity alone is not enough.\n\nTwo chunks can be semantically similar but still be wrong for the current user or task.\n\nExamples:",
+      "- retrieve a broader candidate set\n- apply filtering or reranking\n- pass only the best few chunks to the LLM\n\n## Similarity Thresholds\n\nNearest-neighbor search always returns something, even when nothing is actually relevant.\n\nThat is dangerous. A bad RAG system often looks like:\n\n```text\nno real match\n-> top-k still returned\n-> model receives irrelevant context\n-> hallucinated answer\n```\n\nA similarity threshold prevents obviously weak matches from reaching generation.",
+      "```python\nfrom ragas import evaluate\n# Exact metric names and import paths change across RAGAS versions.\n# The important part is to evaluate the same dataset with a stable metric set.\n\nresults = evaluate(\n    dataset=eval_dataset,\n    metrics=[\n        faithfulness_metric,\n        response_relevance_metric,\n        context_relevance_metric,\n    ],\n)\n```\n\nThe exact tool matters less than the discipline: evaluate the same representative queries before and after every major retrieval change."
+    ],
+    "response":"Cosine similarity is used in RAG to measure the similarity between vectors, which can represent chunks of text. It helps in determining which chunks are semantically similar to a given query, enabling the system to identify potentially relevant information to retrieve. However, it's important to recognize that vector similarity alone is not always enough, as semantically similar chunks may still be wrong for the user's specific task or context. Additional steps like applying filtering or reranking may be necessary to refine the candidate set further.",
+    "reference":"Cosine similarity measures the angle between two vectors in the embedding space. In RAG, it is used to find the chunks whose embeddings are most similar to the query embedding \u2014 a higher cosine similarity means the chunk is semantically closer to the question.",
+    "faithfulness":0.5714285714,
+    "answer_relevancy":0.9833180067,
+    "context_precision":0.5
+  }
+]

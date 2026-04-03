@@ -1,0 +1,48 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@variant dark (&:where(.dark, .dark *));
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+.fade-in-up-delay {
+  animation: fadeInUp 0.7s ease-out 0.25s forwards;
+  opacity: 0;
+}
+
+@keyframes atlas-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes atlas-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.9)  rotate(0deg); }
+  50%       { opacity: 1;   transform: scale(1.15) rotate(180deg); }
+}
+
+@keyframes atlas-blob {
+  0%,100% { border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
+  33%      { border-radius: 40% 60% 45% 55% / 60% 40% 60% 40%; }
+  66%      { border-radius: 55% 45% 60% 40% / 40% 55% 45% 60%; }
+}
+
+@keyframes atlas-enter {
+  0%   { transform: scale(6); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.atlas-enter {
+  transform-origin: bottom right;
+  animation: atlas-enter 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}

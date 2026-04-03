@@ -1,0 +1,15 @@
+[
+  {
+    "user_input":"What is cosine similarity used for in RAG?",
+    "retrieved_contexts":[
+      "- retrieve a broader candidate set\n- apply filtering or reranking\n- pass only the best few chunks to the LLM\n\n## Similarity Thresholds\n\nNearest-neighbor search always returns something, even when nothing is actually relevant.\n\nThat is dangerous. A bad RAG system often looks like:\n\n```text\nno real match\n-> top-k still returned\n-> model receives irrelevant context\n-> hallucinated answer\n```\n\nA similarity threshold prevents obviously weak matches from reaching generation.",
+      "Instead of searching across every chunk in the system, you first restrict the search space to the subset that could possibly contain the answer.\n\n## Why It Matters in RAG\n\nVector similarity alone is not enough.\n\nTwo chunks can be semantically similar but still be wrong for the current user or task.\n\nExamples:",
+      "That often gets misdiagnosed as a vector DB problem when it is really an embedding problem.\n\n## Key Questions\n\n> _Q: What is an embedding and why is it important in RAG?_\n\nAn embedding is a vector representation of text where semantically similar content is placed near each other in vector space. In RAG, both documents and queries are embedded so the retriever can find meaning-based matches instead of relying only on exact keywords."
+    ],
+    "response":"I don't know.",
+    "reference":"Cosine similarity measures the angle between two vectors in the embedding space. In RAG, it is used to find the chunks whose embeddings are most similar to the query embedding \u2014 a higher cosine similarity means the chunk is semantically closer to the question.",
+    "faithfulness":0.0,
+    "answer_relevancy":0.0,
+    "context_precision":0.8333333333
+  }
+]

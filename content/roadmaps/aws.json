@@ -1,0 +1,65 @@
+{
+  "sections": [
+    {
+      "title": "Introduction",
+      "items": [
+        { "label": "What is AWS?", "slug": null },
+        { "label": "Regions, AZs, and Global Infrastructure", "slug": null },
+        { "label": "Shared Responsibility Model", "slug": null }
+      ]
+    },
+    {
+      "title": "Compute",
+      "items": [
+        { "label": "EC2", "slug": null },
+        { "label": "Lambda", "slug": null },
+        { "label": "ECS and Fargate", "slug": null },
+        { "label": "Elastic Beanstalk", "slug": null }
+      ]
+    },
+    {
+      "title": "Storage and Databases",
+      "items": [
+        { "label": "S3", "slug": null },
+        { "label": "EBS and EFS", "slug": null },
+        { "label": "RDS", "slug": null },
+        { "label": "DynamoDB", "slug": null }
+      ]
+    },
+    {
+      "title": "Networking and Delivery",
+      "items": [
+        { "label": "VPC", "slug": null },
+        { "label": "Route 53", "slug": null },
+        { "label": "Load Balancers", "slug": null },
+        { "label": "CloudFront", "slug": null },
+        { "label": "API Gateway", "slug": null }
+      ]
+    },
+    {
+      "title": "Security and Operations",
+      "items": [
+        { "label": "IAM", "slug": null },
+        { "label": "Security Groups vs NACLs", "slug": null },
+        { "label": "CloudWatch and CloudTrail", "slug": null },
+        { "label": "Auto Scaling", "slug": null }
+      ]
+    },
+    {
+      "title": "Architecture Patterns",
+      "items": [
+        { "label": "High Availability", "slug": null },
+        { "label": "Scalability", "slug": null },
+        { "label": "Disaster Recovery", "slug": null },
+        { "label": "Cost Optimization", "slug": null }
+      ]
+    },
+    {
+      "title": "Interview Patterns",
+      "items": [
+        { "label": "Common AWS Interview Questions", "slug": null },
+        { "label": "Service Trade-offs", "slug": null }
+      ]
+    }
+  ]
+}

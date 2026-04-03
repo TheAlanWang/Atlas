@@ -1,0 +1,26 @@
+{
+  "category": "languages",
+  "sections": [
+    {
+      "title": "Fundamentals",
+      "order": 1
+    },
+    {
+      "title": "OOP",
+      "order": 2
+    },
+    {
+      "title": "Concurrency",
+      "order": 3
+    },
+    {
+      "title": "Spring Boot",
+      "order": 4
+    },
+    {
+      "title": "Interview",
+      "order": 5
+    }
+  ],
+  "homepage": true
+}

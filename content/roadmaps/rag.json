@@ -1,0 +1,50 @@
+{
+  "sections": [
+    {
+      "title": "Introduction",
+      "items": [
+        { "label": "What is RAG?",      "slug": "rag-intro"         },
+        { "label": "The RAG Pipeline",  "slug": "rag-pipeline"      }
+      ]
+    },
+    {
+      "title": "Core Retrieval Concepts",
+      "items": [
+        { "label": "Chunking Strategies", "slug": "rag-chunking"           },
+        { "label": "Embeddings",          "slug": "rag-embeddings"         },
+        { "label": "Vector DB",           "slug": "rag-vectordb"           },
+        { "label": "Metadata Filtering",  "slug": "rag-metadata-filtering" },
+        { "label": "Retrieval",           "slug": "rag-retrieval"          }
+      ]
+    },
+    {
+      "title": "Retrieval Optimization",
+      "items": [
+        { "label": "Hybrid Search",        "slug": "rag-hybrid-search" },
+        { "label": "Reranking",            "slug": "rag-reranking" },
+        { "label": "Query Transformation", "slug": "rag-query-transformation" }
+      ]
+    },
+    {
+      "title": "Generation and Context",
+      "items": [
+        { "label": "Context Construction", "slug": "rag-context-construction" },
+        { "label": "Generation",           "slug": "rag-generation" }
+      ]
+    },
+    {
+      "title": "Evaluation and Failure Modes",
+      "items": [
+        { "label": "RAG Evaluation",           "slug": "rag-evaluation" },
+        { "label": "Production Failure Modes", "slug": "rag-production-failure-modes" },
+        { "label": "RAG vs Fine-tuning",       "slug": "rag-vs-fine-tuning" }
+      ]
+    },
+    {
+      "title": "Advanced Systems",
+      "items": [
+        { "label": "Agentic RAG", "slug": "rag-agentic-rag" }
+      ]
+    }
+  ]
+}

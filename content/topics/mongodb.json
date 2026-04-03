@@ -1,0 +1,22 @@
+{
+  "category": "database",
+  "sections": [
+    {
+      "title": "Fundamentals",
+      "order": 1
+    },
+    {
+      "title": "Queries",
+      "order": 2
+    },
+    {
+      "title": "Performance",
+      "order": 3
+    },
+    {
+      "title": "Interview",
+      "order": 4
+    }
+  ],
+  "homepage": true
+}

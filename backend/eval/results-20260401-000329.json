@@ -1,0 +1,41 @@
+[
+  {
+    "user_input":"Why must you use the same embedding model for indexing and querying?",
+    "retrieved_contexts":[
+      "Because it defines the retrieval space itself. If semantically important distinctions are not preserved in the embedding space, the rest of the pipeline is working with weak candidates from the start.\n\n> _Q: Why must indexing and querying use the same embedding model?_\n\nBecause both documents and queries need to live in the same vector space. If they are embedded with different models, similarity scores become inconsistent and retrieval quality breaks down.",
+      "## Why Embeddings Matter in RAG\n\nIn RAG, both document chunks and the user's query are embedded into the same vector space.\n\n```text\nchunk -> embedding\nquery -> embedding\nnearest vectors -> retrieved candidates\n```\n\nIf the embedding model is weak, retrieval quality is capped before reranking or generation even begins.\n\n## What a Good Embedding Model Needs to Capture\n\nA useful embedding model should preserve:",
+      "> _Q: What do embeddings do that keyword search cannot do well?_\n\nEmbeddings allow retrieval to match based on meaning rather than exact wording. That means a query can retrieve relevant chunks even when the source document uses different phrasing, synonyms, or paraphrases.\n\n> _Q: Why is the embedding model such a high-leverage choice in a RAG system?_"
+    ],
+    "response":"Because both documents and queries need to live in the same vector space. If they are embedded with different models, similarity scores become inconsistent and retrieval quality breaks down.",
+    "reference":"Embeddings only have meaning within the same model's vector space. If different models are used for documents and queries, the vectors are not comparable and cosine similarity between them is meaningless.",
+    "faithfulness":1.0,
+    "answer_relevancy":0.6122709476,
+    "context_precision":1.0
+  },
+  {
+    "user_input":"What is reranking and why is it useful?",
+    "retrieved_contexts":[
+      "Because rerankers are much slower than vector search. They compare the query against individual candidates in a more expensive way, so they are practical only after a fast first-pass retriever narrows the search space.\n\n> _Q: What problem does reranking solve best?_\n\nIt is best at fixing ordering quality when retrieval is close but imperfect. If the right chunks are already in the candidate set but not ranked highly enough, reranking can move them to the top before generation.",
+      "- broad first-pass retrieval\n- rerank a small set such as top-20 or top-50\n- pass only the best few chunks to generation\n\nThat keeps quality gains while limiting cost.\n\n## Key Questions\n\n> _Q: What is reranking in RAG?_\n\nReranking is a second-pass relevance scoring step applied after retrieval. The system first fetches a candidate set, then uses a stronger model to reorder those candidates so the best evidence appears at the top.\n\n> _Q: Why not use the reranker on the whole corpus directly?_",
+      "## In This Chapter\n\n- The main idea behind this part of the RAG system\n- The trade-offs that matter in practice\n- The interview framing that makes the topic easier to explain\n\n---\n\n\n## What Reranking Does\n\nReranking is a second-pass scoring step applied after initial retrieval.\n\nInstead of trusting the vector database's first ordering, the system takes the top candidate chunks and asks a stronger model to sort them again by relevance."
+    ],
+    "response":"Reranking is a second-pass relevance scoring step applied after retrieval. It is useful because it helps fix ordering quality when retrieval is close but imperfect, by using a stronger model to reorder candidate chunks so the best evidence appears at the top. This is especially useful if the right chunks are already in the candidate set but not ranked highly enough.",
+    "reference":"Reranking is a second-pass scoring step after initial vector retrieval. It uses a cross-encoder model that reads the query and each candidate chunk together to produce a more accurate relevance score. It is useful because bi-encoder vector search is fast but imprecise \u2014 reranking improves precision without replacing the speed of vector search.",
+    "faithfulness":1.0,
+    "answer_relevancy":0.8776392448,
+    "context_precision":1.0
+  },
+  {
+    "user_input":"How do you prevent an LLM from hallucinating in a RAG system?",
+    "retrieved_contexts":[
+      "Hallucination is when an LLM generates text that is factually incorrect but presented with confidence. It occurs because LLMs predict statistically likely text rather than retrieving verified facts. Mitigation strategies include RAG (providing grounding documents), prompt engineering (asking the model to say \"I don't know\" when uncertain), and output validation.",
+      "## Why Do LLMs Hallucinate?\n\nHallucination is when an LLM confidently states something that is false.\n\nThis happens because LLMs are not databases. They don't store facts. They learn **patterns** from training data. When asked about something outside their training data (or something too specific), they generate text that *sounds* correct based on patterns, even if the content is wrong.",
+      "RAG stands for Retrieval-Augmented Generation. It means retrieving relevant external information first, then using that retrieved information to augment the model's generation.\n\n> _Q: Why do people use RAG instead of relying only on an LLM?_\n\nBecause LLMs have knowledge cutoffs and can hallucinate. RAG lets the system answer from current or private documents at query time, which improves factual accuracy and grounding.\n\n> _Q: What does grounding mean in RAG?_"
+    ],
+    "response":"In a RAG system, hallucination is mitigated by providing grounding documents. This involves retrieving relevant external information first, which is then used to augment the model's generation and improve factual accuracy.",
+    "reference":"Two approaches: first, instruct the model in the system prompt to answer only from the provided context and say 'I don't know' if the answer is not there. Second, improve retrieval quality so relevant chunks are actually returned \u2014 if wrong chunks are retrieved, even a well-instructed model cannot answer correctly.",
+    "faithfulness":1.0,
+    "answer_relevancy":0.7966511872,
+    "context_precision":0.8333333333
+  }
+]

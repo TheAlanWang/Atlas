@@ -1,0 +1,31 @@
+{
+  "category": "ai",
+  "parent": "llm",
+  "sections": [
+    {
+      "title": "Introduction",
+      "order": 1
+    },
+    {
+      "title": "Core Retrieval Concepts",
+      "order": 2
+    },
+    {
+      "title": "Retrieval Optimization",
+      "order": 3
+    },
+    {
+      "title": "Generation and Context",
+      "order": 4
+    },
+    {
+      "title": "Evaluation and Failure Modes",
+      "order": 5
+    },
+    {
+      "title": "Advanced Systems",
+      "order": 6
+    }
+  ],
+  "homepage": false
+}

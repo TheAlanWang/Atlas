@@ -1,0 +1,12 @@
+{
+  "topic": "python",
+  "title": "Python Sketches",
+  "items": [
+    {
+      "slug": "python-cheatsheet",
+      "title": "Python Command Cheatsheet",
+      "date": "2026-04-01",
+      "excerpt": "A quick command cheatsheet for checking Python, managing virtual environments, handling packages, and running files or modules."
+    }
+  ]
+}

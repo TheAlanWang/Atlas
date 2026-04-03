@@ -1,0 +1,42 @@
+[
+  {
+    "question": "What is an LLM?",
+    "ground_truth": "An LLM (Large Language Model) is a deep learning model trained on large amounts of text data to understand and generate human language. It predicts the next token based on context and can perform tasks like question answering, summarization, and code generation."
+  },
+  {
+    "question": "What is the difference between a token and a word?",
+    "ground_truth": "A token is the basic unit an LLM processes — it can be a word, part of a word, or punctuation. Words are split into subword tokens by a tokenizer. For example, 'unhappiness' might be tokenized as 'un', 'happiness'."
+  },
+  {
+    "question": "What is RAG?",
+    "ground_truth": "RAG stands for Retrieval-Augmented Generation. It is a technique that retrieves relevant documents from a knowledge base and injects them as context into an LLM prompt, grounding the model's response in external information rather than relying solely on training memory."
+  },
+  {
+    "question": "What are the two phases of a RAG pipeline?",
+    "ground_truth": "The two phases are: the offline indexing phase (documents are chunked, embedded, and stored in a vector database) and the online query phase (the user question is embedded, relevant chunks are retrieved via similarity search, and an LLM generates a grounded answer)."
+  },
+  {
+    "question": "Why do we chunk documents before embedding them?",
+    "ground_truth": "Embedding models have a token limit and produce a single vector per input. Chunking ensures each piece is small enough to embed and topically focused, which improves retrieval precision — a 500-token chunk is more likely to be relevant to a specific query than a 5000-token document."
+  },
+  {
+    "question": "What is the purpose of overlap in chunking?",
+    "ground_truth": "Overlap ensures that key sentences at the boundary between two chunks are not cut off. Without overlap, context that spans a chunk boundary would be split and lost. A typical overlap is 50-100 tokens."
+  },
+  {
+    "question": "Why must you use the same embedding model for indexing and querying?",
+    "ground_truth": "Embeddings only have meaning within the same model's vector space. If different models are used for documents and queries, the vectors are not comparable and cosine similarity between them is meaningless."
+  },
+  {
+    "question": "What is reranking and why is it useful?",
+    "ground_truth": "Reranking is a second-pass scoring step after initial vector retrieval. It uses a cross-encoder model that reads the query and each candidate chunk together to produce a more accurate relevance score. It is useful because bi-encoder vector search is fast but imprecise — reranking improves precision without replacing the speed of vector search."
+  },
+  {
+    "question": "How do you prevent an LLM from hallucinating in a RAG system?",
+    "ground_truth": "Two approaches: first, instruct the model in the system prompt to answer only from the provided context and say 'I don't know' if the answer is not there. Second, improve retrieval quality so relevant chunks are actually returned — if wrong chunks are retrieved, even a well-instructed model cannot answer correctly."
+  },
+  {
+    "question": "What is cosine similarity used for in RAG?",
+    "ground_truth": "Cosine similarity measures the angle between two vectors in the embedding space. In RAG, it is used to find the chunks whose embeddings are most similar to the query embedding — a higher cosine similarity means the chunk is semantically closer to the question."
+  }
+]

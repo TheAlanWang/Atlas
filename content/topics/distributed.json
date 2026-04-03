@@ -1,0 +1,26 @@
+{
+  "category": "systems",
+  "sections": [
+    {
+      "title": "Fundamentals",
+      "order": 1
+    },
+    {
+      "title": "Messaging",
+      "order": 2
+    },
+    {
+      "title": "Caching",
+      "order": 3
+    },
+    {
+      "title": "Architecture",
+      "order": 4
+    },
+    {
+      "title": "Interview",
+      "order": 5
+    }
+  ],
+  "homepage": true
+}

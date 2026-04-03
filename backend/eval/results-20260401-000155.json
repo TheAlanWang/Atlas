@@ -1,0 +1,41 @@
+[
+  {
+    "user_input":"What is an LLM?",
+    "retrieved_contexts":[
+      "## What is an LLM?\n\nA Large Language Model (LLM) is an AI model trained to understand and generate human language. You give it text, it gives you text back.\n\nLLMs are a subset of **NLP (Natural Language Processing),** the broader field of making computers understand human language. Before LLMs, each NLP task (translation, summarization, classification) required its own specialized model. LLMs changed that: one model can do all of it.",
+      "## Why Do LLMs Hallucinate?\n\nHallucination is when an LLM confidently states something that is false.\n\nThis happens because LLMs are not databases. They don't store facts. They learn **patterns** from training data. When asked about something outside their training data (or something too specific), they generate text that *sounds* correct based on patterns, even if the content is wrong.",
+      "ChatGPT, Claude, and Gemini are all LLMs. Under the hood, they are all doing the same thing: **predicting what text should come next**.\n\n## How Does an LLM Work?\n\nAn LLM is trained on massive amounts of text: books, articles, websites, code. During training, it learns patterns: what words tend to follow other words, how sentences are structured, how ideas connect."
+    ],
+    "response":"A Large Language Model (LLM) is an AI model trained to understand and generate human language. It is a subset of Natural Language Processing (NLP) and can perform various tasks like translation, summarization, and classification with a single model, unlike earlier approaches that required specialized models for each task.",
+    "reference":"An LLM (Large Language Model) is a deep learning model trained on large amounts of text data to understand and generate human language. It predicts the next token based on context and can perform tasks like question answering, summarization, and code generation.",
+    "faithfulness":1.0,
+    "answer_relevancy":0.523148334,
+    "context_precision":0.8333333333
+  },
+  {
+    "user_input":"What is the difference between a token and a word?",
+    "retrieved_contexts":[
+      "A token is the basic unit of text that an LLM processes. Tokens are not exactly words. They are subword chunks, roughly 0.75 words or 4 characters on average in English. LLMs read and generate text one token at a time, and pricing for API usage is typically calculated per token.\n\n> _Q: What is a context window and why does it matter?_",
+      "When you send a message, the model doesn't \"look up\" an answer. It generates a response **one token at a time**, each token chosen based on what is most likely to come next given everything before it.\n\nThink of it like autocomplete, but trained on the entire internet and much better at it.\n\n## What is a Token?\n\nA token is the smallest unit of text an LLM processes. Tokens are not exactly words. They are chunks of characters.",
+      "```\n\"Hello, world!\" \u2192 [\"Hello\", \",\", \" world\", \"!\"]  (4 tokens)\n\"unhappiness\"   \u2192 [\"un\", \"happiness\"]             (2 tokens)\n\"LLM\"           \u2192 [\"L\", \"LM\"]                     (2 tokens)\n```\n\nAs a rough estimate: **1 token \u2248 0.75 words**, or about 4 characters in English.\n\nWhy does this matter? Because LLMs have a limit on how many tokens they can process at once, called the **context window**.\n\n## What is a Context Window?"
+    ],
+    "response":"A token is not exactly a word. Tokens are subword chunks, which are generally about 0.75 words or 4 characters on average in English. They can represent whole words, parts of words, or even single characters depending on how the text is divided.",
+    "reference":"A token is the basic unit an LLM processes \u2014 it can be a word, part of a word, or punctuation. Words are split into subword tokens by a tokenizer. For example, 'unhappiness' might be tokenized as 'un', 'happiness'.",
+    "faithfulness":0.8333333333,
+    "answer_relevancy":0.6607160711,
+    "context_precision":1.0
+  },
+  {
+    "user_input":"What is RAG?",
+    "retrieved_contexts":[
+      "RAG stands for Retrieval-Augmented Generation. It means retrieving relevant external information first, then using that retrieved information to augment the model's generation.\n\n> _Q: Why do people use RAG instead of relying only on an LLM?_\n\nBecause LLMs have knowledge cutoffs and can hallucinate. RAG lets the system answer from current or private documents at query time, which improves factual accuracy and grounding.\n\n> _Q: What does grounding mean in RAG?_",
+      "Agentic RAG is a retrieval-augmented system where the model can plan, decide on multiple retrieval steps, reformulate queries, or call tools before producing an answer. It is more dynamic than a single-pass RAG pipeline.\n\n> _Q: When is agentic RAG worth the added complexity?_\n\nIt is worth it when the task genuinely needs multi-step evidence gathering, tool use, or iterative retrieval. For simple question answering over a stable corpus, plain RAG is often enough.",
+      "Multiple retrieval steps are part of it, but agentic RAG is broader than that. The system is also making policy and orchestration decisions about whether to retrieve, what tool to call, and when to stop. That decision layer is what makes it \"agentic.\""
+    ],
+    "response":"RAG stands for Retrieval-Augmented Generation. It means retrieving relevant external information first, then using that retrieved information to augment the model's generation.",
+    "reference":"RAG stands for Retrieval-Augmented Generation. It is a technique that retrieves relevant documents from a knowledge base and injects them as context into an LLM prompt, grounding the model's response in external information rather than relying solely on training memory.",
+    "faithfulness":1.0,
+    "answer_relevancy":0.9149886056,
+    "context_precision":0.9999999999
+  }
+]
