@@ -23,12 +23,12 @@ export type SketchTopicSummary = {
 
 export type SketchSummary = SketchItem & {
   topic: string;
-  svgContent: string | null;
+  svgSrc: string | null;
 };
 
 export type Sketch = SketchItem & {
   topic: string;
-  svgContent: string | null;
+  svgSrc: string | null;
   sourceExists: boolean;
 };
 
@@ -48,6 +48,10 @@ function getSvgPath(topic: string, slug: string) {
 
 function getSourcePath(topic: string, slug: string) {
   return path.join(getTopicDir(topic), `${slug}.excalidraw`);
+}
+
+function getSvgRoute(topic: string, slug: string) {
+  return `/sketches/assets/${encodeURIComponent(topic)}/${encodeURIComponent(slug)}`;
 }
 
 export function getSketchTopics(): string[] {
@@ -113,8 +117,8 @@ export function getAllSketches(): SketchSummary[] {
       return index.items.map((item) => ({
         ...item,
         topic,
-        svgContent: fs.existsSync(getSvgPath(topic, item.slug))
-          ? fs.readFileSync(getSvgPath(topic, item.slug), "utf8")
+        svgSrc: fs.existsSync(getSvgPath(topic, item.slug))
+          ? getSvgRoute(topic, item.slug)
           : null,
       }));
     })
@@ -122,7 +126,11 @@ export function getAllSketches(): SketchSummary[] {
 }
 
 export function getAllSketchSlugs(): { slug: string }[] {
-  return getAllSketches().map((item) => ({ slug: item.slug }));
+  return getSketchTopics().flatMap((topic) => {
+    const index = getSketchTopicIndex(topic);
+    if (!index) return [];
+    return index.items.map((item) => ({ slug: item.slug }));
+  });
 }
 
 export function getAllSketchParams(): { topic: string; slug: string }[] {
@@ -144,13 +152,18 @@ export function getSketch(topic: string, slug: string): Sketch | null {
   return {
     ...item,
     topic,
-    svgContent: fs.existsSync(svgPath) ? fs.readFileSync(svgPath, "utf8") : null,
+    svgSrc: fs.existsSync(svgPath) ? getSvgRoute(topic, slug) : null,
     sourceExists: fs.existsSync(sourcePath),
   };
 }
 
 export function getSketchBySlug(slug: string): Sketch | null {
-  const match = getAllSketches().find((item) => item.slug === slug);
-  if (!match) return null;
-  return getSketch(match.topic, match.slug);
+  for (const topic of getSketchTopics()) {
+    const sketch = getSketch(topic, slug);
+    if (sketch) {
+      return sketch;
+    }
+  }
+
+  return null;
 }

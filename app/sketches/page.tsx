@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getAllSketches } from "@/lib/sketches";
 import { formatDate } from "@/lib/utils";
@@ -13,17 +14,6 @@ const TITLE_CLASS =
   "mb-2 text-[1.85rem] font-black tracking-[-0.03em] text-slate-900 transition-colors duration-300 group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400";
 const DATE_CLASS = "mb-3 text-sm font-medium text-slate-400 dark:text-slate-500";
 const EXCERPT_CLASS = "text-sm leading-6 text-slate-600 dark:text-slate-300";
-
-function normalizeSketchCardSvg(svgContent: string) {
-  return svgContent.replace(/<svg\b([^>]*)>/i, (match, attrs) => {
-    const withoutSize = attrs
-      .replace(/\swidth="[^"]*"/i, "")
-      .replace(/\sheight="[^"]*"/i, "")
-      .trim();
-
-    return `<svg ${withoutSize} preserveAspectRatio="xMidYMin meet">`;
-  });
-}
 
 export default function SketchesPage() {
   const sketches = getAllSketches();
@@ -59,15 +49,15 @@ export default function SketchesPage() {
                 {entry.excerpt}
               </p>
 
-              {entry.svgContent && (
-                <div
-                  className="mt-5 overflow-hidden rounded-[22px] bg-slate-50 p-2 transition-transform duration-300 group-hover:scale-[1.01] dark:bg-slate-900"
-                >
-                  <div
-                    className="max-h-[240px] overflow-hidden [&_svg]:mx-auto [&_svg]:block [&_svg]:h-auto [&_svg]:w-full [&_svg]:max-w-none"
-                    dangerouslySetInnerHTML={{
-                      __html: normalizeSketchCardSvg(entry.svgContent),
-                    }}
+              {entry.svgSrc && (
+                <div className="relative mt-5 aspect-[4/3] overflow-hidden rounded-[22px] bg-slate-50 transition-transform duration-300 group-hover:scale-[1.01] dark:bg-slate-900">
+                  <Image
+                    src={entry.svgSrc}
+                    alt={entry.title}
+                    fill
+                    sizes="(min-width: 1280px) 30vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-contain p-2"
+                    unoptimized
                   />
                 </div>
               )}

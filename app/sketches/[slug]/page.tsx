@@ -45,8 +45,8 @@ export default async function SketchDetailPage({ params }: Props) {
       </div>
 
       <div className="overflow-hidden rounded-[32px] border border-slate-200 bg-white p-4 shadow-[0_20px_60px_rgba(15,23,42,0.08)] dark:border-slate-800 dark:bg-slate-950 dark:shadow-none sm:p-6">
-        {sketch.svgContent ? (
-          <SketchViewer svgContent={sketch.svgContent} title={sketch.title} />
+        {sketch.svgSrc ? (
+          <SketchViewer svgSrc={sketch.svgSrc} title={sketch.title} />
         ) : (
           <div className="flex min-h-[420px] items-center justify-center rounded-[24px] border border-dashed border-slate-300 bg-white text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">
             Preview not added yet.

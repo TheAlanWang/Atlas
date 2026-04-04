@@ -11,10 +11,6 @@ import {
 import { getAllProjects } from "@/lib/projects";
 import { getAllSketches } from "@/lib/sketches";
 
-function svgToDataUri(svgContent: string) {
-  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgContent)}`;
-}
-
 export default async function Home() {
   const allArticles = await getAllKnowledgeArticles();
   const allProjects = await getAllProjects();
@@ -137,9 +133,9 @@ export default async function Home() {
             >
               <article className="flex h-full flex-col overflow-hidden rounded-[30px] border border-black/6 bg-white shadow-[0_1px_1px_rgba(15,23,42,0.02),0_10px_30px_rgba(15,23,42,0.06)] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_1px_1px_rgba(15,23,42,0.02),0_18px_36px_rgba(15,23,42,0.1)] dark:border-white/10 dark:bg-slate-950 dark:shadow-[0_1px_1px_rgba(255,255,255,0.02),0_14px_32px_rgba(2,6,23,0.34)] dark:group-hover:shadow-[0_1px_1px_rgba(255,255,255,0.02),0_18px_40px_rgba(2,6,23,0.42)]">
                 <div className="relative aspect-8/10 overflow-hidden bg-slate-100 dark:bg-slate-900">
-                  {sketch.svgContent ? (
+                  {sketch.svgSrc ? (
                     <Image
-                      src={svgToDataUri(sketch.svgContent)}
+                      src={sketch.svgSrc}
                       alt={sketch.title}
                       fill
                       sizes="(min-width: 1024px) 25vw, (min-width: 640px) 18rem, 82vw"

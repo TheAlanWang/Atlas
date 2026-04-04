@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 type Props = {
-  svgContent: string;
+  svgSrc: string;
   title: string;
 };
 
@@ -27,15 +28,14 @@ function normalizeSvgMarkup(svgContent: string) {
   });
 }
 
-export default function SketchViewer({ svgContent, title }: Props) {
-  const normalizedSvg = useMemo(
-    () => normalizeSvgMarkup(svgContent),
-    [svgContent],
-  );
+export default function SketchViewer({ svgSrc, title }: Props) {
   const [open, setOpen] = useState(false);
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
+  const [svgMarkup, setSvgMarkup] = useState<string | null>(null);
+  const [isLoadingSvg, setIsLoadingSvg] = useState(false);
+  const [svgLoadError, setSvgLoadError] = useState<string | null>(null);
   const dragState = useRef<{
     x: number;
     y: number;
@@ -59,6 +59,40 @@ export default function SketchViewer({ svgContent, title }: Props) {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [open]);
+
+  useEffect(() => {
+    if (!open || svgMarkup || isLoadingSvg) return;
+
+    const controller = new AbortController();
+
+    async function loadSvg() {
+      try {
+        setIsLoadingSvg(true);
+        setSvgLoadError(null);
+
+        const response = await fetch(svgSrc, { signal: controller.signal });
+        if (!response.ok) {
+          throw new Error(`Failed to load sketch preview (${response.status})`);
+        }
+
+        const svgText = await response.text();
+        setSvgMarkup(normalizeSvgMarkup(svgText));
+      } catch (error) {
+        if (controller.signal.aborted) {
+          return;
+        }
+        console.error("[SketchViewer] failed to load SVG", error);
+        setSvgLoadError("Unable to load the full sketch right now.");
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsLoadingSvg(false);
+        }
+      }
+    }
+
+    void loadSvg();
+    return () => controller.abort();
+  }, [isLoadingSvg, open, svgMarkup, svgSrc]);
 
   function resetView() {
     setScale(1);
@@ -126,10 +160,17 @@ export default function SketchViewer({ svgContent, title }: Props) {
           className="block w-full cursor-zoom-in rounded-[24px] bg-white p-3 text-left transition-transform hover:scale-[1.01] dark:bg-slate-900 sm:p-4"
           aria-label={`Open viewer for ${title}`}
         >
-          <div
-            className="mx-auto max-w-[1180px] [&_svg]:mx-auto [&_svg]:block [&_svg]:h-auto [&_svg]:max-w-full [&_svg]:w-full"
-            dangerouslySetInnerHTML={{ __html: normalizedSvg }}
-          />
+          <div className="relative min-h-[320px] sm:min-h-[420px]">
+            <Image
+              src={svgSrc}
+              alt={title}
+              fill
+              sizes="(min-width: 1024px) 1180px, 100vw"
+              className="object-contain"
+              unoptimized
+              priority
+            />
+          </div>
         </button>
       </div>
 
@@ -196,17 +237,27 @@ export default function SketchViewer({ svgContent, title }: Props) {
                   onDoubleClick={resetView}
                   style={{ cursor: dragging ? "grabbing" : "grab" }}
                 >
-                  <div
-                    className="[&_svg]:block [&_svg]:h-auto [&_svg]:w-[min(90vw,1400px)] [&_svg]:max-w-none"
-                    style={{
-                      transform: `translate(${offset.x}px, ${offset.y}px) scale(${scale})`,
-                      transformOrigin: "center center",
-                      transition: dragging
-                        ? "none"
-                        : "transform 120ms ease-out",
-                    }}
-                    dangerouslySetInnerHTML={{ __html: normalizedSvg }}
-                  />
+                  {isLoadingSvg ? (
+                    <p className="text-sm font-medium text-slate-500">
+                      Loading full sketch...
+                    </p>
+                  ) : svgLoadError ? (
+                    <p className="text-sm font-medium text-rose-400">
+                      {svgLoadError}
+                    </p>
+                  ) : svgMarkup ? (
+                    <div
+                      className="[&_svg]:block [&_svg]:h-auto [&_svg]:w-[min(90vw,1400px)] [&_svg]:max-w-none"
+                      style={{
+                        transform: `translate(${offset.x}px, ${offset.y}px) scale(${scale})`,
+                        transformOrigin: "center center",
+                        transition: dragging
+                          ? "none"
+                          : "transform 120ms ease-out",
+                      }}
+                      dangerouslySetInnerHTML={{ __html: svgMarkup }}
+                    />
+                  ) : null}
                 </div>
               </div>
             </div>
