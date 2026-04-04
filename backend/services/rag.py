@@ -14,6 +14,7 @@ _supabase_url = os.getenv("SUPABASE_URL", "")
 _supabase_key = os.getenv("SUPABASE_ANON_KEY", "")
 supabase_client: Client = create_client(_supabase_url, _supabase_key) if _supabase_url else None  # type: ignore
 logger = logging.getLogger(__name__)
+DEFAULT_CANDIDATE_COUNT = 8
 
 SYSTEM_PROMPT = """You are a helpful assistant for the Atlas learning platform.
 Answer questions based ONLY on the context below.
@@ -51,6 +52,27 @@ def _candidate_count(final_k: int) -> int:
     return max(final_k, configured)
 
 
+def _hybrid_retrieval_enabled() -> bool:
+    return os.getenv("HYBRID_RETRIEVAL_ENABLED", "true").lower() != "false"
+
+
+def _vector_candidate_count(final_k: int) -> int:
+    configured = int(
+        os.getenv(
+            "RAG_VECTOR_CANDIDATES",
+            os.getenv("RAG_RETRIEVE_CANDIDATES", str(DEFAULT_CANDIDATE_COUNT)),
+        )
+    )
+    return max(final_k, configured)
+
+
+def _lexical_candidate_count(final_k: int) -> int:
+    configured = int(
+        os.getenv("RAG_LEXICAL_CANDIDATES", str(DEFAULT_CANDIDATE_COUNT))
+    )
+    return max(final_k, configured)
+
+
 def _reranker_retry_attempts() -> int:
     return max(1, int(os.getenv("RERANKER_MAX_RETRIES", "3")))
 
@@ -75,6 +97,34 @@ async def _vector_retrieve(question: str, match_count: int) -> list[dict]:
         "match_count": match_count,
     }).execute()
     return result.data or []
+
+
+async def _lexical_retrieve(question: str, match_count: int) -> list[dict]:
+    """Search Postgres full-text / lexical index for exact-term matches."""
+    result = supabase_client.rpc("search_documents_lexical", {
+        "query_text": question,
+        "match_count": match_count,
+    }).execute()
+    return result.data or []
+
+
+def _doc_identity(doc: dict[str, Any]) -> tuple[str, str]:
+    return (str(doc.get("slug", "")), str(doc.get("content", "")))
+
+
+def _merge_candidates(vector_docs: list[dict], lexical_docs: list[dict]) -> list[dict]:
+    """Preserve vector ordering and append lexical-only chunks."""
+    merged: list[dict] = []
+    seen: set[tuple[str, str]] = set()
+
+    for doc in [*vector_docs, *lexical_docs]:
+        identity = _doc_identity(doc)
+        if identity in seen:
+            continue
+        seen.add(identity)
+        merged.append(doc)
+
+    return merged
 
 
 async def rerank_documents(
@@ -139,9 +189,24 @@ async def rerank_documents(
 
 
 async def retrieve(question: str, top_k: int = 3) -> list[dict]:
-    """Retrieve from pgvector, then optionally rerank before truncating."""
-    candidate_count = _candidate_count(top_k) if _reranker_enabled() else top_k
-    docs = await _vector_retrieve(question, candidate_count)
+    """Retrieve with hybrid search, then optionally rerank before truncating."""
+    vector_candidate_count = (
+        _vector_candidate_count(top_k) if _hybrid_retrieval_enabled()
+        else _candidate_count(top_k) if _reranker_enabled()
+        else top_k
+    )
+    vector_docs = await _vector_retrieve(question, vector_candidate_count)
+    docs = vector_docs
+
+    if _hybrid_retrieval_enabled():
+        try:
+            lexical_docs = await _lexical_retrieve(
+                question,
+                _lexical_candidate_count(top_k),
+            )
+            docs = _merge_candidates(vector_docs, lexical_docs)
+        except Exception as exc:
+            logger.warning("Lexical retrieval failed; falling back to vector order: %s", exc)
 
     if not docs or not _reranker_enabled():
         return docs[:top_k]
