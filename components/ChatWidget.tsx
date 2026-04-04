@@ -44,45 +44,81 @@ export default function ChatWidget() {
     const chatUrl = process.env.NEXT_PUBLIC_API_URL
       ? `${process.env.NEXT_PUBLIC_API_URL}/chat`
       : "/api/chat";
-    const res = await fetch(chatUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        question,
-        history: messages.slice(-6).map((m) => ({
-          role: m.role,
-          content: m.content,
-        })),
-      }),
-    });
 
-    const reader = res.body!.getReader();
-    const decoder = new TextDecoder();
+    try {
+      // Keep the widget usable if the request or stream fails midway.
+      const res = await fetch(chatUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question,
+          history: messages.slice(-6).map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        }),
+      });
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      const lines = decoder.decode(value).split("\n");
-      for (const line of lines) {
-        if (!line.startsWith("data: ")) continue;
-        const data = line.slice(6);
-        if (data === "[DONE]") break;
-
-        const parsed = JSON.parse(data);
-
-        setMessages((prev) => {
-          const updated = [...prev];
-          const last = { ...updated[updated.length - 1] };
-          if (parsed.sources) last.sources = parsed.sources;
-          if (parsed.text) last.content += parsed.text;
-          updated[updated.length - 1] = last;
-          return updated;
-        });
+      if (!res.ok) {
+        throw new Error(`Chat request failed with status ${res.status}`);
       }
-    }
 
-    setLoading(false);
+      if (!res.body) {
+        throw new Error("Chat response body is missing");
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      // SSE chunks can arrive split across reads, so keep a carry-over buffer.
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const events = buffer.split("\n\n");
+        buffer = events.pop() ?? "";
+
+        for (const event of events) {
+          const line = event
+            .split("\n")
+            .find((entry) => entry.startsWith("data: "));
+
+          if (!line) continue;
+
+          const data = line.slice(6);
+          if (data === "[DONE]") continue;
+
+          const parsed = JSON.parse(data) as {
+            sources?: Source[];
+            text?: string;
+          };
+
+          setMessages((prev) => {
+            const updated = [...prev];
+            const last = { ...updated[updated.length - 1] };
+            if (parsed.sources) last.sources = parsed.sources;
+            if (parsed.text) last.content += parsed.text;
+            updated[updated.length - 1] = last;
+            return updated;
+          });
+        }
+      }
+    } catch (error) {
+      console.error("[Atlas chat latency] request failed", error);
+      setMessages((prev) => {
+        const updated = [...prev];
+        const last = { ...updated[updated.length - 1] };
+        if (!last.content) {
+          last.content = "Sorry, something went wrong.";
+        }
+        updated[updated.length - 1] = last;
+        return updated;
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
