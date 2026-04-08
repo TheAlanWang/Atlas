@@ -29,6 +29,7 @@ export type SketchSummary = SketchItem & {
 export type Sketch = SketchItem & {
   topic: string;
   svgSrc: string | null;
+  svgContent: string | null;
   sourceExists: boolean;
 };
 
@@ -153,6 +154,8 @@ export function getSketch(topic: string, slug: string): Sketch | null {
     ...item,
     topic,
     svgSrc: fs.existsSync(svgPath) ? getSvgRoute(topic, slug) : null,
+    // Read the full SVG only on the detail page path, not for every sketch card.
+    svgContent: fs.existsSync(svgPath) ? fs.readFileSync(svgPath, "utf8") : null,
     sourceExists: fs.existsSync(sourcePath),
   };
 }

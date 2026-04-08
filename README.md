@@ -38,7 +38,14 @@ Create a `.env.local` file:
 OPENAI_API_KEY=sk-...
 SUPABASE_URL=https://xxx.supabase.co
 SUPABASE_ANON_KEY=eyJ...
+SUPABASE_SERVICE_ROLE_KEY=eyJ...
+CHAT_ALLOWED_ORIGINS=http://localhost:3000,https://thealanwang.xyz
+CHAT_RATE_LIMIT_WINDOW_MS=300000
+CHAT_RATE_LIMIT_MAX_REQUESTS=10
 ```
+
+`SUPABASE_ANON_KEY` is used by the public retrieval RPCs.
+`SUPABASE_SERVICE_ROLE_KEY` is required by `scripts/embed-knowledge.ts` for direct writes to `documents`.
 
 ## Embedding Knowledge
 

@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 type Props = {
   svgSrc: string;
+  svgContent?: string | null;
   title: string;
 };
 
@@ -28,12 +29,16 @@ function normalizeSvgMarkup(svgContent: string) {
   });
 }
 
-export default function SketchViewer({ svgSrc, title }: Props) {
+export default function SketchViewer({ svgSrc, svgContent = null, title }: Props) {
+  const normalizedSvg = useMemo(
+    () => (svgContent ? normalizeSvgMarkup(svgContent) : null),
+    [svgContent],
+  );
   const [open, setOpen] = useState(false);
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
-  const [svgMarkup, setSvgMarkup] = useState<string | null>(null);
+  const [svgMarkup, setSvgMarkup] = useState<string | null>(normalizedSvg);
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
   const [svgLoadError, setSvgLoadError] = useState<string | null>(null);
   const dragState = useRef<{
@@ -59,6 +64,10 @@ export default function SketchViewer({ svgSrc, title }: Props) {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [open]);
+
+  useEffect(() => {
+    setSvgMarkup(normalizedSvg);
+  }, [normalizedSvg]);
 
   useEffect(() => {
     if (!open || svgMarkup || isLoadingSvg) return;
@@ -160,17 +169,24 @@ export default function SketchViewer({ svgSrc, title }: Props) {
           className="block w-full cursor-zoom-in rounded-[24px] bg-white p-3 text-left transition-transform hover:scale-[1.01] dark:bg-slate-900 sm:p-4"
           aria-label={`Open viewer for ${title}`}
         >
-          <div className="relative min-h-[320px] sm:min-h-[420px]">
-            <Image
-              src={svgSrc}
-              alt={title}
-              fill
-              sizes="(min-width: 1024px) 1180px, 100vw"
-              className="object-contain"
-              unoptimized
-              priority
+          {normalizedSvg ? (
+            <div
+              className="mx-auto max-w-[1180px] [&_svg]:mx-auto [&_svg]:block [&_svg]:h-auto [&_svg]:max-w-full [&_svg]:w-full"
+              dangerouslySetInnerHTML={{ __html: normalizedSvg }}
             />
-          </div>
+          ) : (
+            <div className="relative min-h-[320px] sm:min-h-[420px]">
+              <Image
+                src={svgSrc}
+                alt={title}
+                fill
+                sizes="(min-width: 1024px) 1180px, 100vw"
+                className="object-contain"
+                unoptimized
+                priority
+              />
+            </div>
+          )}
         </button>
       </div>
 

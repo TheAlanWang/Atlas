@@ -60,7 +60,18 @@ export default function ChatWidget() {
       });
 
       if (!res.ok) {
-        throw new Error(`Chat request failed with status ${res.status}`);
+        let message = `Chat request failed with status ${res.status}`;
+
+        try {
+          const errorBody = (await res.json()) as { error?: unknown };
+          if (typeof errorBody.error === "string" && errorBody.error.trim()) {
+            message = errorBody.error;
+          }
+        } catch {
+          // Keep the status-based fallback when the response is not JSON.
+        }
+
+        throw new Error(message);
       }
 
       if (!res.body) {
@@ -111,7 +122,10 @@ export default function ChatWidget() {
         const updated = [...prev];
         const last = { ...updated[updated.length - 1] };
         if (!last.content) {
-          last.content = "Sorry, something went wrong.";
+          last.content =
+            error instanceof Error
+              ? error.message
+              : "Sorry, something went wrong.";
         }
         updated[updated.length - 1] = last;
         return updated;
@@ -163,7 +177,12 @@ export default function ChatWidget() {
         <div className="fixed bottom-20 left-3 right-3 md:left-auto md:right-6 md:w-80 z-50 h-[70vh] md:h-112.5 bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl flex flex-col border border-zinc-200 dark:border-zinc-700">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-200 dark:border-zinc-700">
-            <span className="font-semibold text-sm">Atlas AI Assistant</span>
+            <div className="min-w-0">
+              <span className="block font-semibold text-sm">Atlas AI Assistant</span>
+              <span className="block text-[11px] text-zinc-500 dark:text-zinc-400">
+                Atlas-only answers. Requests may be rate-limited.
+              </span>
+            </div>
             <button
               onClick={() => setOpen(false)}
               className="text-zinc-400 hover:text-zinc-600"

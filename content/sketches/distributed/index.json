@@ -1,7 +1,13 @@
 {
   "topic": "distributed",
-  "title": "Kafka Sketches",
+  "title": "Distributed Systems Sketches",
   "items": [
+    {
+      "slug": "redis-overview",
+      "title": "Redis Overview",
+      "date": "2026-04-08",
+      "excerpt": "A visual Redis study sheet covering data structures, expiration, persistence, eviction, replication, pub/sub, and optimistic transactions."
+    },
     {
       "slug": "kafka-overview",
       "title": "Kafka Overview",

@@ -8,10 +8,17 @@ import matter from "gray-matter";
 import OpenAI from "openai";
 import { createClient } from "@supabase/supabase-js";
 
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+if (!serviceRoleKey) {
+  throw new Error(
+    "SUPABASE_SERVICE_ROLE_KEY is required for embedding knowledge because direct table access is not available to the anon role.",
+  );
+}
+
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const supabase = createClient(
   process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!,
+  serviceRoleKey,
 );
 
 const KNOWLEDGE_DIR = path.join(process.cwd(), "content/knowledge");

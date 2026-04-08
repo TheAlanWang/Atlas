@@ -1,6 +1,7 @@
 // app/api/chat/route.ts
 import OpenAI from "openai";
 import { createClient } from "@supabase/supabase-js";
+import { guardChatRequest } from "@/lib/chatSecurity";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const supabase = createClient(
@@ -11,6 +12,14 @@ const CHAT_ROUTE = "/api/chat";
 const CHAT_ENV = process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? "unknown";
 const DEFAULT_CHAT_TOP_K = 3;
 const DEFAULT_CANDIDATE_COUNT = 8;
+const CHAT_SYSTEM_PROMPT = `You are a helpful assistant for the Atlas learning platform.
+Answer questions based ONLY on the Atlas context below.
+You are not a general-purpose GPT assistant.
+If the answer is not in the context, say so honestly.
+Be concise and clear.
+
+Context:
+`;
 
 type ChatRequestBody = {
   question?: unknown;
@@ -212,6 +221,30 @@ export async function POST(req: Request) {
   let timeToFirstTokenMs: number | null = null;
 
   try {
+    const guardFailure = guardChatRequest(req);
+    if (guardFailure) {
+      logLatencyEvent(
+        createLatencyEvent({
+          trafficType,
+          status: "error",
+          ttftMs: timeToFirstTokenMs,
+          totalLatencyMs: performance.now() - requestStartedAt,
+          questionLength,
+          answerLength,
+        }),
+      );
+
+      return Response.json(
+        { error: guardFailure.error },
+        {
+          status: guardFailure.status,
+          headers: guardFailure.retryAfterSeconds
+            ? { "Retry-After": String(guardFailure.retryAfterSeconds) }
+            : undefined,
+        },
+      );
+    }
+
     const body = (await req.json()) as ChatRequestBody;
     const question =
       typeof body.question === "string" ? body.question.trim() : "";
@@ -247,13 +280,7 @@ export async function POST(req: Request) {
       messages: [
         {
           role: "system",
-          content: `You are a helpful assistant for the Atlas learning platform.
-                    Answer questions based ONLY on the context below.
-                    If the answer is not in the context, say so honestly.
-                    Be concise and clear.
-
-                    Context:
-                    ${context}`,
+          content: `${CHAT_SYSTEM_PROMPT}${context}`,
         },
         ...history,
         { role: "user", content: question },

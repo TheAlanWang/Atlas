@@ -1,10 +1,11 @@
 import time
 from typing import AsyncGenerator
 
-from fastapi import APIRouter
-from fastapi.responses import StreamingResponse
+from fastapi import APIRouter, Request
+from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 from backend.services.rag import retrieve, stream_generate
+from backend.services.chat_security import guard_chat_request
 
 router = APIRouter()
 
@@ -15,9 +16,17 @@ class ChatRequest(BaseModel):
 
 
 @router.post("/chat")
-async def chat(req: ChatRequest):
+async def chat(req: ChatRequest, request: Request):
     """Embed the question, retrieve relevant chunks, stream a grounded response.
     Response is Server-Sent Events: sources metadata first, then text tokens, then [DONE]."""
+    guard_failure = guard_chat_request(request)
+    if guard_failure is not None:
+        return JSONResponse(
+            status_code=guard_failure.status_code,
+            content={"error": guard_failure.error},
+            headers=guard_failure.headers,
+        )
+
     # Start timing on the server so logs land in the backend runtime.
     started_at = time.perf_counter()
     docs = await retrieve(req.question)

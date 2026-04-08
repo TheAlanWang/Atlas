@@ -17,7 +17,8 @@ logger = logging.getLogger(__name__)
 DEFAULT_CANDIDATE_COUNT = 8
 
 SYSTEM_PROMPT = """You are a helpful assistant for the Atlas learning platform.
-Answer questions based ONLY on the context below.
+Answer questions based ONLY on the Atlas context below.
+You are not a general-purpose GPT assistant.
 If the answer is not in the context, say so honestly.
 Be concise and clear.
 
