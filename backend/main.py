@@ -13,7 +13,11 @@ app = FastAPI(title="Atlas RAG API")
 # Allow requests from the Next.js dev server and production domain
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://thealanwang.xyz"],
+    allow_origins=[
+        "http://localhost:3000",
+        "https://thealanwang.xyz",
+        "https://www.thealanwang.xyz",
+    ],
     allow_methods=["POST"],
     allow_headers=["Content-Type"],
 )

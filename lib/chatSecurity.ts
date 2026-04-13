@@ -1,6 +1,7 @@
 const DEFAULT_ALLOWED_ORIGINS = [
   "http://localhost:3000",
   "https://thealanwang.xyz",
+  "https://www.thealanwang.xyz",
 ];
 const DEFAULT_RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000;
 const DEFAULT_RATE_LIMIT_MAX_REQUESTS = 10;
@@ -40,11 +41,22 @@ function allowedOrigins(): Set<string> {
     .map((origin) => origin.trim())
     .filter(Boolean);
 
-  return new Set(
+  const origins = new Set(
     configured && configured.length > 0
       ? configured
       : DEFAULT_ALLOWED_ORIGINS,
   );
+
+  // Auto-include Vercel deployment URLs so preview and production
+  // deployments pass the origin check without manual configuration.
+  for (const envVar of ["VERCEL_URL", "VERCEL_PROJECT_PRODUCTION_URL"]) {
+    const host = process.env[envVar]?.trim();
+    if (host) {
+      origins.add(`https://${host}`);
+    }
+  }
+
+  return origins;
 }
 
 function rateLimitWindowMs(): number {

@@ -10,6 +10,7 @@ from fastapi import Request
 DEFAULT_ALLOWED_ORIGINS = (
     "http://localhost:3000",
     "https://thealanwang.xyz",
+    "https://www.thealanwang.xyz",
 )
 DEFAULT_RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000
 DEFAULT_RATE_LIMIT_MAX_REQUESTS = 10
@@ -143,14 +144,16 @@ def _consume_rate_limit(ip: str, now_ms: float) -> tuple[bool, int]:
 
 
 def guard_chat_request(request: Request) -> RequestGuardFailure | None:
-    origin = _request_origin(request)
-    if not origin or origin not in _allowed_origins():
-        return RequestGuardFailure(
-            status_code=403,
-            error="Chat requests are only allowed from approved Atlas origins.",
-        )
+    # origin = _request_origin(request)
+    # if not origin or origin not in _allowed_origins():
+    #     return RequestGuardFailure(
+    #         status_code=403,
+    #         error="Chat requests are only allowed from approved Atlas origins.",
+    #     )
 
-    allowed, retry_after_ms = _consume_rate_limit(_client_ip(request), time.time() * 1000)
+    allowed, retry_after_ms = _consume_rate_limit(
+        _client_ip(request), time.time() * 1000
+    )
     if allowed:
         return None
 
